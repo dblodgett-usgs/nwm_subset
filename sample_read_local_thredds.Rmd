@@ -1,0 +1,78 @@
+---
+title: "NHDPlus Network Refactor Report"
+author: "dblodgett@usgs.gov"
+date: "3/21/2018"
+output: html_document
+---
+
+```{r setup,  include=FALSE}
+library(ncdf4)
+options(scipen = 9999)
+```
+```{r open_explore}
+nc <- nc_open("http://localhost/thredds/dodsC/nwm_retro")
+
+get_time_nc <- function(tDim) {
+  as.POSIXct(tDim$vals*60, 
+             origin = as.POSIXct(strsplit(tDim$units,
+                                          split = " ")[[1]][3], 
+                                 tz = "UTC"),
+             tz = "UTC")
+  }
+
+time <- get_time_nc(nc$dim$time)
+
+cat("found longer than expected time steps between")
+cat(paste(time[which(diff(as.numeric(time))>3600)], time[which(diff(as.numeric(time))>3600)+1], "\n"))
+
+```
+```{r sites}
+sites <- sf::st_read("nexus_locations/linked_sites.gpkg")
+
+site <- "07374000"
+COMID <- dplyr::filter(sites, site_id == site)$COMID
+
+dap_index <- which(nc$dim$feature_id$vals == COMID)[2]
+
+dat <- ncvar_get(nc, nc$var$streamflow, start = c(dap_index, 1), count = c(1, -1))
+
+site_ts <- data.frame(time=time, streamflow=dat)
+
+plot(site_ts, pch = ".")
+```
+
+```{r fmrc_med_time}
+nc <- nc_open("http://localhost/thredds/dodsC/medium_range")
+
+run_time <- get_time_nc(nc$dim$reference_time)
+time <- get_time_nc(nc$dim$time)
+cat(paste("Time has two dimensions:", dim(time), "Run time has one demention:", dim(run_time)))
+# Axis order here is feature_id/time/reference_time
+dat <- ncvar_get(nc, nc$var$streamflow, start = c(dap_index, 1, 1), count = c(1, -1, 1))
+site_ts <- data.frame(time=time[,1], streamflow=dat)
+plot(site_ts)
+```
+
+```{r fmrc_short_time}
+nc <- nc_open("http://localhost/thredds/dodsC/short_range")
+
+run_time <- get_time_nc(nc$dim$reference_time)
+time <- get_time_nc(nc$dim$time)
+cat(paste("Time has two dimensions:", dim(time), "Run time has one demention:", dim(run_time)))
+
+dat <- ncvar_get(nc, nc$var$streamflow, start = c(dap_index, 1, 1), count = c(1, -1, 1))
+site_ts <- data.frame(time=time[,1], streamflow=dat)
+plot(site_ts)
+```
+
+```{r fmrc_long_time}
+nc <- nc_open("http://localhost/thredds/dodsC/long_range_mem1")
+
+run_time <- get_time_nc(nc$dim$reference_time)
+time <- get_time_nc(nc$dim$time)
+cat(paste("Time has two dimensions:", dim(time), "Run time has one demention:", dim(run_time)))
+
+dat <- ncvar_get(nc, nc$var$streamflow, start = c(dap_index, 1, 1), count = c(1, -1, 1))
+site_ts <- data.frame(time=time[,1], streamflow=dat)
+plot(site_ts)
+```
