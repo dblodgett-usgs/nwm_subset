@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
-# in_file <- "in.nc"
-# out_file <- "test.nc"
+# in_file <- "nwm_cull/nwm-v1.2-channel_spatial_index.nc"
+# out_file <- "nwm_cull/culled_latlon.nc"
 # comids <- c(7700148, 6781041, 8520575)
 
 args = commandArgs(trailingOnly=TRUE)
@@ -67,7 +67,8 @@ if(!"reference_time" %in% names(nc$dim) &
   nc <- nc_open(in_file, write = FALSE) 
 }
 
-if(nc$dim$time$units == "") {
+if("time" %in% names(nc$dim)) {
+  if(nc$dim$time$units == "") {
   nc_close(nc)
   nc <- nc_open(in_file, write = T)
   
@@ -90,6 +91,7 @@ if(nc$dim$time$units == "") {
   
   nc_close(nc)
   nc <- nc_open(in_file, write = FALSE) 
+}
 }
 
 comids <- readRDS(comids)
