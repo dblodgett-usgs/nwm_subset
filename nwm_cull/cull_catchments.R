@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 
-in_file <- ""http://localhost/thredds/dodsC/nwm_retro""
-out_file <- "test.nc"
-comids <- c(7700148, 6781041, 8520575)
+# in_file <- "in.nc"
+# out_file <- "test.nc"
+# comids <- c(7700148, 6781041, 8520575)
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -147,13 +147,13 @@ for(var in c(nc$var, nc$dim, list(list(name = 0)))) {
 nc_close(new_nc)
 new_nc <- nc_open(out_file, write = TRUE)
 if("time" %in% names(nc$dim)) {
-  ncvar_put(new_nc, new_nc$var$streamflow, ncvar_get(nc, nc$var$streamflow)[keep])
+  ncvar_put(new_nc, new_nc$var$streamflow, ncvar_get(nc, nc$var$streamflow, raw_datavals = TRUE)[keep])
   if("reference_time" %in% names(nc$dim)) {
     ncvar_put(new_nc, "reference_time", nc$dim$reference_time$vals)
   }
 } else {
-  ncvar_put(new_nc, new_nc$var$latitude, ncvar_get(nc, nc$var$latitude)[keep])
-  ncvar_put(new_nc, new_nc$var$longitude, ncvar_get(nc, nc$var$longitude)[keep])
+  ncvar_put(new_nc, new_nc$var$latitude, ncvar_get(nc, nc$var$latitude, raw_datavals = TRUE)[keep])
+  ncvar_put(new_nc, new_nc$var$longitude, ncvar_get(nc, nc$var$longitude, raw_datavals = TRUE)[keep])
 }
 
 ncvar_put(new_nc, new_nc$dim$feature_id$name, ncvar_get(nc, nc$dim$feature_id$name)[keep])
