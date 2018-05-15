@@ -1,5 +1,4 @@
 .DS_Store
-*.rds
 *.tsv
 *.gpkg
 .Rhistory
