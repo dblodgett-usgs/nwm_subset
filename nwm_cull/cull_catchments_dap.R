@@ -4,15 +4,19 @@
 # in_file <- "http://localhost/thredds/dodsC/medium_range"
 # out_file <- "demo_medium_range.nc"
 # 
-# comids <- c(7700148, 6781041, 8520575)
+# comid_list <- c(7700148, 6781041, 8520575)
 
 library(ncdf4)
 
 nc <- nc_open(in_file)
 
-keep <- nc$dim$feature_id$vals %in% comids
+site_inds <- which(nc$dim$feature_id$vals %in% comid_list) # indices into original nc file
 
-new_feature_id <- nc$dim$feature_id$vals[keep]
+if(length(site_inds) > length(comid_list)) {
+  warning("found duplicate comids that match in the input file.")
+}
+
+new_feature_id <- nc$dim$feature_id$vals[site_inds]
 
 new_feature_id_dim <- ncdim_def(nc$dim$feature_id$name, 
                                 units = "", 
@@ -78,8 +82,6 @@ new_nc <- nc_open(out_file, write = TRUE)
 
 dimids <- nc$var$streamflow$dimids
 
-site_inds <- which(keep)
-
 if(length(dimids) == 2) {
   streamflow <- matrix(nrow=new_nc$dim$time$len, ncol=length(site_inds))
 } else if (length(dimids) == 3) {
@@ -109,10 +111,10 @@ if("reference_time" %in% names(nc$dim)) {
   ncvar_put(new_nc, "reference_time", nc$dim$reference_time$vals)
 }
 
-ncvar_put(new_nc, new_nc$var$latitude, ncvar_get(nc, nc$var$latitude)[keep])
-ncvar_put(new_nc, new_nc$var$longitude, ncvar_get(nc, nc$var$longitude)[keep])
+ncvar_put(new_nc, new_nc$var$latitude, ncvar_get(nc, nc$var$latitude)[site_inds])
+ncvar_put(new_nc, new_nc$var$longitude, ncvar_get(nc, nc$var$longitude)[site_inds])
 
-ncvar_put(new_nc, new_nc$dim$feature_id$name, ncvar_get(nc, nc$dim$feature_id$name)[keep])
+ncvar_put(new_nc, new_nc$dim$feature_id$name, ncvar_get(nc, nc$dim$feature_id$name)[site_inds])
 
 nc_close(new_nc)
 nc_close(nc)
