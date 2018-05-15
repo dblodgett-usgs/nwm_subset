@@ -3,3 +3,4 @@
 *.tsv
 *.gpkg
 .Rhistory
+.Rproj.user
