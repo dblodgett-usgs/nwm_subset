@@ -82,30 +82,25 @@ new_nc <- nc_open(out_file, write = TRUE)
 
 dimids <- nc$var$streamflow$dimids
 
-if(length(dimids) == 2) {
-  streamflow <- matrix(nrow=new_nc$dim$time$len, ncol=length(site_inds))
-} else if (length(dimids) == 3) {
-  if(!all(nc$var$streamflow$dimids == c(0,2,1))) stop("dimids now as expected")
-  streamflow <- array(dim = c(length(site_inds), nc$dim$time$len, nc$dim$reference_time$len))
-}
-
-
 for(s in 1:length(site_inds)) {
   if(length(dimids) == 2) {
     # Note axis order is assumed here!!!
-    streamflow[,s] <- ncvar_get(nc, nc$var$streamflow,
-                                start = c(site_inds[s], 1), 
-                                count = c(1, -1))
+    ncvar_put(new_nc, new_nc$var$streamflow,
+              ncvar_get(nc, nc$var$streamflow,
+                        start = c(site_inds[s], 1),
+                        count = c(1, -1), raw_datavals = TRUE),
+              start = c(s, 1), count = c(1, -1))
   } else if(length(dimids) == 3) {
     for(r in 1:nc$dim$reference_time$len) {
-      streamflow[s,,r] <- ncvar_get(nc, nc$var$streamflow,
-                                  start = c(site_inds[s], 1, r), 
-                                  count = c(1, -1, 1))
+      ncvar_put(new_nc, new_nc$var$streamflow,
+                ncvar_get(nc, nc$var$streamflow,
+                          start = c(site_inds[s], 1, r),
+                          count = c(1, -1, 1), raw_datavals = TRUE),
+                start = c(s, 1, r),
+                count = c(1, -1, 1))
     }
   }
 }
-
-ncvar_put(new_nc, new_nc$var$streamflow, streamflow)
 
 if("reference_time" %in% names(nc$dim)) {
   ncvar_put(new_nc, "reference_time", nc$dim$reference_time$vals)
