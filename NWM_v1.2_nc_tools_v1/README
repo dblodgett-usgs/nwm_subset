@@ -1,0 +1,244 @@
+Software version: NWM_v1.2_nc_tools_v1
+National Water Model version: 1.2 (also works with NWM 1.1 files)
+
+Quick Start
+-----------
+In order to reduce the size of data transmission, the raw NOAA/NWS National 
+Water Model(NWM) output, available through the NOMDAS system as a set of 
+netCDF files, does not contain geospatial information for all output file 
+types. As such, the python script and metadata template provided here can be
+used to append geospatial information to the "channel_rt" output files; 
+"land", "terrain_rt", "reservoir" and "forcing" file types already contain 
+geospatial information (i.e. projected/geographic coordinates). After 
+processing, files can be loaded into a Geographic Information System (GIS) 
+or netCDF friendly software package for visualization.
+
+This script can be run from terminal or command line.
+
+Development/Testing Software:
+
+Python:        2.7.8
+ArcGIS:        10.3.1 for Desktop
+QGIS:          2.14.0
+Unidata IDV:   5.2 (Java web-start)
+NCVIEW:        2.1.1
+Panoply:       4.2.1
+
+Required libraries: 
+
+Python core libraries: os, sys, getopt, time, glob, shutil, re
+netCDF-4-python: netcdf4 (version 1.2.2 tested)
+GDAL: osr (version 2.0.0 tested)
+
+NOTE: See python support below for references to python libraries
+
+Syntax:
+
+python nwm_metadataAppender.py <Spatial Metadata File> <Input Directory>
+<NWM File Type> <Output Directory>
+
+Required arguments:
+
+<Spatial Metadata File> -> Metadata template file for specified file type
+      <Input Directory> -> Directory containing NWM output
+        <NWM File Type> -> option:[channel_rt]
+     <Output Directory> -> Directory to store georeferenced NWM output
+
+NOTE: All files in input directory, with designated file type, will be 
+processed and output in output directory.
+
+Examples:
+
+Full paths (Windows):
+
+C:\> python
+C:\NWM_Tools\nwm_metadataAppender.py 
+C:\NWM_Tools\spatialMetadataFiles\nwm-v1.2-channel_spatial_index.nc
+C:\NWM_Tools\input
+C:\NWM_Tools\output
+
+Simplified, relative paths:
+
+(Windows)
+
+C:\NWM_Tools> python
+nwm_metadataAppender.py
+spatialMetadataFiles\nwm-v1.2-channel_spatial_index.nc
+input
+channel_rt
+output
+
+(UNIX)
+
+# python nwm_metadataAppender.py
+spatialMetadataFiles/nwm-v1.2-channel_spatial_index.nc
+input
+channel_rt
+output
+
+Background
+----------
+
+The NOAA/NWS National Water Model (NWM) is an implementation of the WRF-
+Hydro modeling framework (https://www.ral.ucar.edu/projects/wrf_hydro) 
+developed by the National Center for Atmospheric Research (NCAR). 
+Development of the NWM has been supported by NOAA/NWS, NCAR, USGS and 
+CUAHSI. The NWS Office of Water Prediction (OWP) operates the NWM.
+
+In operation, the NWM includes four model configurations: an hourly 
+analysis and assimilation cycle, hourly 0-18 hour short range forecast (SRF), 
+daily 0-10 day medium range forecast (MRF) and daily 0-30 day ensemble long 
+range forecast (LRF). The analysis and assimilation cycle will be run hourly 
+to estimate real-time initial conditions using a blend of MRMS, HRRR and RAP 
+meteorological forcing. The SRF will have a one hour time step and will use 
+a downscaled HRRR and RAP blend, the MRF will have a three hour time step 
+and will use a downscaled GFS product, and the LRF will have a six hour time 
+step and use a downscaled and bias-corrected ensemble CFS product. AA includes
+24 cycles per day, SRF includes 24 cycles per day, MRF includes 4 cycles per day
+(one cycle every 6h), and the LRF ensemble will be a time-lagged ensemble with
+4 cycles with 4 ensemble members (one cycle every 6h), for a total of 16 members
+per day.
+
+Acronyms:
+
+MRMS -> Multi-Radar/Multi-Sensor System
+HRRR -> High Resolution Rapid Refresh
+RAP -> Rapid Refresh
+GFS -> Global Forecast System
+CFS -> Climate Forecast System
+
+The NWM provides four distinct output file types with different variables 
+contained within (some variable are referenced below but not all): land, 
+terrain_rt, channel_rt and reservoir. The land output provides estimates of 
+key water budget variables on a 1 km grid across a spatial domain extending 
+into Canada and Mexico; this is considered output from the land surface 
+model operating within the NWM. Similarly, the terrain_rt output provides 
+simulated ponding depth on a 250 m grid across the same spatial extent as 
+the land output. The channel_rt output provides simulated streamflow and 
+velocity for approximately 2.7+ million river segments across the contiguous
+U.S. and its flow contributing areas in Canada and Mexico. Within the U.S., 
+river segments are derived from the NHDPlus V21 National Flattened File 
+Geodatabase. Finally, the reservoir output provides simulated water level, 
+inflow and outflow for 1506 lakes and reservoirs across the contiguous U.S.
+
+Note: Visit the NHDPlus website (http://www.horizon-systems.com/nhdplus/) for 
+details on the river network used within the NWM. River segments outside of 
+the U.S. boundary were derived by NOAA/NWS and NCAR. River segments have not 
+been derived for all transboundary basins between the U.S., Canada and 
+Mexico. 
+
+Both land and terrain_rt grids use a lambert conformal projection with a 
+spherical datum as is common in operational numerical weather prediction 
+models. The channel_rt file however is referenced by a feature_id variable 
+which corresponds to NHDPlus ComID identifiers; this only applies to river 
+segments within the U.S. boundary (see note above). Although the channel_rt 
+segments represent channels depicted by GIS polylines, the metadata template 
+files provided here will append the latitude and longitude coordinates of the 
+centroid of the depicted river segment; however, flow output from the 
+model represents streamflow at the downstream point of the segment, after it 
+has been routed through the channel. Similarly, the reservoir files will be 
+appended with the latitude and longitude coordinates of the centroid of the 
+reservoir or lake feature modeled within the NWM.
+
+Forcing files provided with the NWM output use the same grid as the land 
+files and similarly the lambert conformal projection with a spherical datum.
+
+Script function
+---------------
+
+This script is intended to add geospatial metadata attributes to the 
+channel_rt NWM outputs in order to facilitate analysis and visualization with 
+GIS and other geospatial-capable applications. The spatial metadata is 
+contained in a separate spatial metadata file or template and this script 
+will append dimensions, variables, and attributes to make the NWM output 
+CF-compliant for spatial applications.
+
+Script details
+--------------
+
+The spatial metadata contained in the attached template can be added as a 
+post processing step using this python script and valid NWM channel_rt files. 
+
+NWM file types:
+
+land - land model grid ('coarse grid')
+terrain_rt - terrain routing grid ('fine grid')
+channel_rt - channel routing locations
+reservoir - lake/reservoir locations
+forcing - land model grid ('coarse grid')
+
+Input directory: The input directory is queried to find all files with the 
+NWM file type string (e.g. ‘channel_rt’) using a wildcard search 
+(e.g. ‘*.channel_rt*’). All files found to match the wildcard search will be 
+processed by the script.
+
+Point Data: In the case of point data, ‘latitude’ and ‘longitude’ variables 
+on the ‘feature_id’ dimension are transferred from the spatial metadata file 
+to the output files. Each variable on the ‘feature_id’ dimension receives a 
+‘coordinates: “latitude longitude”’ variable attribute to indicate the 
+coordinate variables. Global attributes ‘esri_pe_string’ and ‘proj4’ are 
+added for convenience to indicate the geographic coordinate system (‘datum’) 
+of the data, since no method was found that allows specification of datum for 
+point netCDF files. The ‘featureType: “timeSeries”’ global attribute is 
+populated to indicate this file is an orthogonal multidimensional array 
+representation of time series (H.2.1. in CF-1.7; 
+http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/build/cf-
+conventions.html#idp9763584).
+
+NOTE: The script provided here was developed as a general WRF-Hydro post 
+processing tool and has been modified to work with the NWM output.
+
+Script input
+------------
+
+The form of the output will resemble the input data, with the exception that 
+each filename is appended with ‘_georeferenced.nc’.
+
+Script output
+-------------
+
+The script requires a spatial metadata file, a directory containing NWM 
+output data, a string representing the NWM output data type requested, and a 
+directory to store outputs. The python sys.abspath() function will normalize 
+the absolute version of the input path, allowing the user to input absolute 
+or relative paths (e.g. ‘../’).
+
+Python support
+--------------
+
+If you do not have python installed, you can download it through the free
+Anaconda python distribution available below:
+
+https://www.continuum.io/downloads (Python 2.7)
+
+Anaconda Quick Start Guide: 
+https://www.continuum.io/sites/default/files/Anaconda-Quickstart.pdf
+
+After installing and referring to documentation, one can use the conda 
+package to install additional libraries not included with the anaconda
+distribution. To install netcdf4 and osr, follow these steps:
+
+1. From terminal or command line, type:
+conda install -c https://conda.anaconda.org/anaconda netcdf4
+2. From terminal or command line, type:
+conda install -c https://conda.anaconda.org/anaconda gdal
+3. Verify install of libraries by typing the follwoing from terminal or 
+command line:
+
+>python
+import netCDF4
+import gdal
+
+Links to other python libraries can be found here: https://anaconda.org/
+
+Contact
+-------
+
+README authored by Fernando Salas (National Water Center) and Kevin Sampson 
+(NCAR).
+
+Contact:
+
+Fernando Salas at fernando.salas@noaa.gov (for NWM post processing questions)
+Brian Cosgrove at brian.cosgrove@noaa.gov (for NWM implementation questions)
+Ed Clark at edward.clark@noaa.gov (for general OWP/NWC questions)
