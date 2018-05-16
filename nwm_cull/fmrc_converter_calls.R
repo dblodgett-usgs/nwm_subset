@@ -17,7 +17,7 @@ for(date in dates) {
   for(run in runs) {
     in_path <- paste0("nwm/nwm.", date, "/", run)
     out_file <- paste0(run, "_", date, ".nc")
-    cat(paste("  bash nwm_subset/nwm_cull/fmrc_converter.sh", in_path, out_file, "/Volumes/tmpfs/", "nwm_subset/nwm_cull/", paste0("nwm_subset/nexus_locations/",comids,"\n")))
+    cat(paste("  bash nwm_subset/nwm_cull/fmrc_converter.sh", in_path, out_file, "/mnt/tmpfs/", "nwm_subset/nwm_cull/", paste0("nwm_subset/nexus_locations/",comids,"\n")))
   }  
   cat(paste0("  rm -r ", "nwm/nwm.", date, "/\nfi\n"))
 }
