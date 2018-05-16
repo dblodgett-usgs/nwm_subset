@@ -6,7 +6,7 @@ in_dir=$1
 out_file=$2
 temp_dir=$3
 cull_nwm_path=$4
-comid_path=$5
+comid_list=$5
 latlon_path=$6
 file_list=""
 filter_list=""
@@ -41,7 +41,7 @@ if ls $in_dir/nwm.${r}.*  1> /dev/null 2>&1; then
       ncrename -h -O -v station_id,feature_id -d station,feature_id $f $f
     fi
     ncks -h --exclude -v nudge,velocity,q_lateral -O $f $f
-    Rscript --vanilla ${cull_nwm_path}cull_catchments.R $f $f ${comid_path}comids.rds
+    Rscript --vanilla ${cull_nwm_path}cull_catchments.R $f $f ${comid_list}
   done
   ff=${temp_dir_use}/${r}.nc
   ncrcat -h ${tt}/* $ff > /dev/null 2>&1

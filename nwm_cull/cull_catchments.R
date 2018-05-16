@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 
-# in_file <- "nwm_cull/nwm-v1.2-channel_spatial_index.nc"
-# out_file <- "nwm_cull/culled_latlon.nc"
-# comids <- c(7700148, 6781041, 8520575)
+# in_file <- "/Volumes/tmpfs/199301_STREAMFLOW_DOMAIN1.nc"
+# out_file <- "/Volumes/tmpfs/199301_STREAMFLOW_DOMAIN1.nc"
+# comids <- readRDS("nexus_locations/nwis_comids.rds")
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -72,10 +72,11 @@ if("time" %in% names(nc$dim)) {
   nc_close(nc)
   nc <- nc_open(in_file, write = T)
   
-  start_date <- as.POSIXct(paste0(substr(in_file, 1, 6),"010000"), 
+  start_date <- as.POSIXct(paste0(stringr::str_extract(in_file, "[0-9]{6}"),"010000"), 
                            tz = "GMT", 
                            format = "%Y%m%d%H%M",
                            origin = as.POSIXct(1970-01-01, tz = "GMT"))
+  
   start_date <- as.numeric(start_date) / 60
   dates <- seq(start_date, by = 60, length.out = nc$dim$time$len)
   
