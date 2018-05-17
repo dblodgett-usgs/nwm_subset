@@ -1,6 +1,6 @@
 wget_base <- '  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/'
 
-dates <- format(seq(as.Date("2017-05-09"), as.Date("2018-05-01"), by="days"), "%Y%m%d")
+dates <- format(seq(as.Date("2017-05-09"), as.Date("2018-05-16"), by="days"), "%Y%m%d")
 
 runs <- c("short_range", "medium_range", 
           "long_range_mem1", "long_range_mem2", 

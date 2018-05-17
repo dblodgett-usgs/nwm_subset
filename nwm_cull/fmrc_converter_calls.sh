@@ -3938,3 +3938,168 @@ if [ ! -f 20180501.tmp ]; then
   bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180501/long_range_mem4 long_range_mem4_20180501.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
   rm -r nwm/nwm.20180501/
 fi
+if [ ! -f 20180502.tmp ]; then
+  touch 20180502.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180502/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180502/short_range short_range_20180502.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180502/medium_range medium_range_20180502.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180502/long_range_mem1 long_range_mem1_20180502.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180502/long_range_mem2 long_range_mem2_20180502.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180502/long_range_mem3 long_range_mem3_20180502.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180502/long_range_mem4 long_range_mem4_20180502.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180502/
+fi
+if [ ! -f 20180503.tmp ]; then
+  touch 20180503.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180503/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180503/short_range short_range_20180503.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180503/medium_range medium_range_20180503.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180503/long_range_mem1 long_range_mem1_20180503.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180503/long_range_mem2 long_range_mem2_20180503.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180503/long_range_mem3 long_range_mem3_20180503.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180503/long_range_mem4 long_range_mem4_20180503.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180503/
+fi
+if [ ! -f 20180504.tmp ]; then
+  touch 20180504.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180504/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180504/short_range short_range_20180504.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180504/medium_range medium_range_20180504.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180504/long_range_mem1 long_range_mem1_20180504.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180504/long_range_mem2 long_range_mem2_20180504.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180504/long_range_mem3 long_range_mem3_20180504.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180504/long_range_mem4 long_range_mem4_20180504.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180504/
+fi
+if [ ! -f 20180505.tmp ]; then
+  touch 20180505.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180505/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180505/short_range short_range_20180505.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180505/medium_range medium_range_20180505.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180505/long_range_mem1 long_range_mem1_20180505.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180505/long_range_mem2 long_range_mem2_20180505.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180505/long_range_mem3 long_range_mem3_20180505.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180505/long_range_mem4 long_range_mem4_20180505.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180505/
+fi
+if [ ! -f 20180506.tmp ]; then
+  touch 20180506.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180506/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180506/short_range short_range_20180506.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180506/medium_range medium_range_20180506.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180506/long_range_mem1 long_range_mem1_20180506.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180506/long_range_mem2 long_range_mem2_20180506.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180506/long_range_mem3 long_range_mem3_20180506.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180506/long_range_mem4 long_range_mem4_20180506.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180506/
+fi
+if [ ! -f 20180507.tmp ]; then
+  touch 20180507.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180507/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180507/short_range short_range_20180507.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180507/medium_range medium_range_20180507.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180507/long_range_mem1 long_range_mem1_20180507.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180507/long_range_mem2 long_range_mem2_20180507.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180507/long_range_mem3 long_range_mem3_20180507.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180507/long_range_mem4 long_range_mem4_20180507.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180507/
+fi
+if [ ! -f 20180508.tmp ]; then
+  touch 20180508.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180508/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180508/short_range short_range_20180508.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180508/medium_range medium_range_20180508.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180508/long_range_mem1 long_range_mem1_20180508.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180508/long_range_mem2 long_range_mem2_20180508.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180508/long_range_mem3 long_range_mem3_20180508.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180508/long_range_mem4 long_range_mem4_20180508.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180508/
+fi
+if [ ! -f 20180509.tmp ]; then
+  touch 20180509.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180509/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180509/short_range short_range_20180509.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180509/medium_range medium_range_20180509.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180509/long_range_mem1 long_range_mem1_20180509.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180509/long_range_mem2 long_range_mem2_20180509.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180509/long_range_mem3 long_range_mem3_20180509.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180509/long_range_mem4 long_range_mem4_20180509.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180509/
+fi
+if [ ! -f 20180510.tmp ]; then
+  touch 20180510.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180510/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180510/short_range short_range_20180510.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180510/medium_range medium_range_20180510.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180510/long_range_mem1 long_range_mem1_20180510.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180510/long_range_mem2 long_range_mem2_20180510.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180510/long_range_mem3 long_range_mem3_20180510.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180510/long_range_mem4 long_range_mem4_20180510.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180510/
+fi
+if [ ! -f 20180511.tmp ]; then
+  touch 20180511.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180511/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180511/short_range short_range_20180511.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180511/medium_range medium_range_20180511.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180511/long_range_mem1 long_range_mem1_20180511.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180511/long_range_mem2 long_range_mem2_20180511.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180511/long_range_mem3 long_range_mem3_20180511.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180511/long_range_mem4 long_range_mem4_20180511.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180511/
+fi
+if [ ! -f 20180512.tmp ]; then
+  touch 20180512.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180512/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180512/short_range short_range_20180512.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180512/medium_range medium_range_20180512.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180512/long_range_mem1 long_range_mem1_20180512.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180512/long_range_mem2 long_range_mem2_20180512.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180512/long_range_mem3 long_range_mem3_20180512.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180512/long_range_mem4 long_range_mem4_20180512.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180512/
+fi
+if [ ! -f 20180513.tmp ]; then
+  touch 20180513.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180513/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180513/short_range short_range_20180513.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180513/medium_range medium_range_20180513.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180513/long_range_mem1 long_range_mem1_20180513.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180513/long_range_mem2 long_range_mem2_20180513.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180513/long_range_mem3 long_range_mem3_20180513.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180513/long_range_mem4 long_range_mem4_20180513.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180513/
+fi
+if [ ! -f 20180514.tmp ]; then
+  touch 20180514.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180514/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180514/short_range short_range_20180514.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180514/medium_range medium_range_20180514.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180514/long_range_mem1 long_range_mem1_20180514.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180514/long_range_mem2 long_range_mem2_20180514.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180514/long_range_mem3 long_range_mem3_20180514.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180514/long_range_mem4 long_range_mem4_20180514.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180514/
+fi
+if [ ! -f 20180515.tmp ]; then
+  touch 20180515.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180515/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180515/short_range short_range_20180515.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180515/medium_range medium_range_20180515.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180515/long_range_mem1 long_range_mem1_20180515.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180515/long_range_mem2 long_range_mem2_20180515.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180515/long_range_mem3 long_range_mem3_20180515.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180515/long_range_mem4 long_range_mem4_20180515.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180515/
+fi
+if [ ! -f 20180516.tmp ]; then
+  touch 20180516.tmp
+  wget -r -np -nH -q -A "*channel_rt*" http://nwcal-dstore.nwc.nws.noaa.gov/nwm/nwm.20180516/ 
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180516/short_range short_range_20180516.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180516/medium_range medium_range_20180516.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180516/long_range_mem1 long_range_mem1_20180516.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180516/long_range_mem2 long_range_mem2_20180516.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180516/long_range_mem3 long_range_mem3_20180516.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  bash nwm_subset/nwm_cull/fmrc_converter.sh nwm/nwm.20180516/long_range_mem4 long_range_mem4_20180516.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/nwis_comids.rds
+  rm -r nwm/nwm.20180516/
+fi
