@@ -1,6 +1,6 @@
 dates <- format(seq(as.Date("2017-05-09"), as.Date("2018-05-22"), by="days"), "%Y%m%d")
 
-runs <- c("short_range", "medium_range",
+runs <- c("analysis_assim", "short_range", "medium_range",
           "long_range_mem1", "long_range_mem2", 
           "long_range_mem3", "long_range_mem4")
 
