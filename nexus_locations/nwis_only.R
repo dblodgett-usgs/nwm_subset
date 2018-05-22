@@ -7,4 +7,4 @@ v2_comids <- ncdf4::nc_open("NWM_v1.2_nc_tools_v1/spatialMetadataFiles/nwm-v1.2-
 comids <- comids[comids %in% v1_comids]
 comids <- comids[comids %in% v2_comids]
 
-saveRDS(comids, "nwis_comids.rds")
+saveRDS(comids, "nexus_locations/nwis_comids.rds")
