@@ -16,7 +16,7 @@ if (length(args)<3) {
 
 library(xml2)
 
-ostore_root <- "http://nwcal-ucs1:8080/nwm"
+ostore_root <- "http://nwcal-rgw.nwc.nws.noaa.gov:8080/nwm"
 
 get_ostore_urls <- function(date, config, type) {
   
