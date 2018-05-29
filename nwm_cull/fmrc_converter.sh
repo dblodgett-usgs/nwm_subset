@@ -21,9 +21,9 @@ if [[ $config = *"medium_range"* ]]; then
 elif [[ $config = *"long_range"* ]]; then
 	times="t00z t06z t12z t18z"
 elif [[ $config = *"short_range"* ]]; then
-	times="t00z t01z t02z t03z t04z t05z t06z t07z t08z t09z t10z t11z t12z t13z t14z t15z t16z t17z t18z t19z t20z t21z t22z t23z t24z"
+	times="t00z t01z t02z t03z t04z t05z t06z t07z t08z t09z t10z t11z t12z t13z t14z t15z t16z t17z t18z t19z t20z t21z t22z t23z"
 elif [[ $config = *"analysis_assim"* ]]; then
-	times="t00z t01z t02z t03z t04z t05z t06z t07z t08z t09z t10z t11z t12z t13z t14z t15z t16z t17z t18z t19z t20z t21z t22z t23z t24z"
+	times="t00z t01z t02z t03z t04z t05z t06z t07z t08z t09z t10z t11z t12z t13z t14z t15z t16z t17z t18z t19z t20z t21z t22z t23z"
 else
 	echo "invalid mode entered"
 	exit 1
