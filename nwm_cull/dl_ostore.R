@@ -46,7 +46,7 @@ dl_ostore_list <- function(dl_list, out_dir = "nwm") {
   dir.create(direc, recursive = T, showWarnings = F)
   
   for(i in 1:length(dl_list)) {
-    download.file(dl_list[i], out_files[i], quiet = T)
+    if(!grepl("NA", dl_list[i])) download.file(dl_list[i], out_files[i], quiet = T)
   }
 }
 
