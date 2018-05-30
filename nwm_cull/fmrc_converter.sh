@@ -63,7 +63,7 @@ rm $file_list
 ncks -h -A -v latitude,longitude ${latlon_path}culled_latlon.nc ${temp_dir}/$out_file
 ncks -h -O --fix_rec_dmn reference_time --deflate=1 ${temp_dir}/$out_file ${temp_dir}/$out_file
 ncpdq -h -O -a feature_id,reference_time,time ${temp_dir}/$out_file ${temp_dir}/$out_file
-ncks --cnk_plc g3d --cnk_dmn feature_id,1 --deflate=1 ${temp_dir}/$out_file ${temp_dir}/$out_file
+ncks -h -O --cnk_plc g3d --cnk_dmn feature_id,1 --deflate=1 ${temp_dir}/$out_file ${temp_dir}/$out_file
 ncatted -h -O -a "title,global,a,c,NWM Forcast Model Run Collection" -a "axis,time,a,c,T" -a "coordinates,streamflow,m,c,longitude latitude time reference_time" ${temp_dir}/$out_file ${temp_dir}/$out_file
 ncatted -h -O -a "model_initialization_time,global,d,," -a "model_output_valid_time,global,d,," -a "stream_order_output,global,d,," -a "model_version,global,d,," -a "dev_OVRTSWCRT,global,d,," -a "dev_NOAH_TIMESTEP,global,d,," -a "dev_channel_only,global,d,," -a "dev_channelBucket_only,global,d,," -a "dev,global,d,," -a "cdm_datatype,global,d,," -a "station_dimension,global,d,," -a "Conventions,global,m,c,CF-1.7" -a "valid_range,,d,," ${temp_dir}/$out_file $out_file
 rm ${temp_dir}/$out_file
