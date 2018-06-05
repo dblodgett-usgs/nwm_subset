@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
 
-# date <- "20180410"
-# config <- "medium_range"
-# type <- "channel_rt"
-# run <- "t00z"
+date <- "20180410"
+config <- "medium_range"
+type <- "channel_rt"
+run <- "t00z"
 # out_dir <- "temp/20180410_medium_range_nwm_t00z/temp"
 
 args = commandArgs(trailingOnly=TRUE)
@@ -46,11 +46,14 @@ dl_ostore_list <- function(dl_list, out_dir = "nwm") {
   dir.create(direc, recursive = T, showWarnings = F)
   
   for(i in 1:length(dl_list)) {
-    if(!grepl("NA", dl_list[i])) download.file(dl_list[i], out_files[i], quiet = T)
+    if(!grepl("NA", dl_list[i])) {
+      httr::RETRY(verb = "GET", 
+                  url = dl_list[i], 
+                  config = httr::write_disk(out_files[i]), 
+                  quiet = T, 
+                  times = 1000, pause_base = 60, pause_cap = (24*60^2))
+    }
   }
 }
 
 dl_ostore_list(get_ostore_urls(date, config, type, run), out_dir)
-
-
-
