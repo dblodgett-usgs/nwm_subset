@@ -77,6 +77,11 @@ gc()
 missing_sites <- dataRetrieval::readNWISsite(
   siteNumbers = sites[["site_id"]][which(is.na(sites$lat))])
 
+sf::st_write(sf::st_as_sf(missing_sites, 
+                  coords = c("dec_long_va", "dec_lat_va"), 
+                  crs = 4269),
+             "missing_sites.shp")
+
 sites <- left_join(sites, select(missing_sites,
                                  site_id = site_no,
                                  dec_lat_va, dec_long_va),
