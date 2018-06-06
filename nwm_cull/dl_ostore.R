@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
 
-date <- "20180410"
-config <- "medium_range"
-type <- "channel_rt"
-run <- "t00z"
+# date <- "20180410"
+# config <- "medium_range"
+# type <- "channel_rt"
+# run <- "t00z"
 # out_dir <- "temp/20180410_medium_range_nwm_t00z/temp"
 
 args = commandArgs(trailingOnly=TRUE)
@@ -24,7 +24,12 @@ ostore_root <- "http://nwcal-rgw.nwc.nws.noaa.gov:8080/nwm"
 
 get_ostore_urls <- function(date, config, type, run = "") {
   
-  ostore_content <- read_xml(paste0(ostore_root, "?prefix=nwm.", date, "/", config, "&max-keys=100000"))
+  xml_content <- httr::RETRY("GET", 
+                             paste0(ostore_root, "?prefix=nwm.", date, "/", config, "&max-keys=100000"), 
+                             quiet = F, 
+                             times = 1000, pause_base = 2, pause_cap = (24*60^2))
+  
+  ostore_content <- read_xml(suppressMessages(httr::content(xml_content, "text", "text/xml")))
   
   if(xml_text(xml_find_first(ostore_content, 
                              xpath = "//d1:IsTruncated", 
