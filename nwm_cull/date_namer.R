@@ -7,7 +7,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 if (!length(args)==2) {
   stop("Need in_dir and date.\n", call.=FALSE)
-} else if (length(args)=2) {
+} else if (length(args)==2) {
   in_dir <- args[[1]]
   date <- args[[2]]
 }
@@ -24,11 +24,11 @@ for(f in files) {
   
   date_posix <- date_posix + diff_hours * 60^2
   
-  file.rename(f, 
-              paste0(strftime(date_posix, 
+  file.rename(file.path(in_dir, f), 
+              file.path(in_dir, paste0(strftime(date_posix, 
                              format = "%Y%m%d%H%M", 
                              tz = "GMT"), ".",
-                    f))
+														 f)))
 }
 
 
