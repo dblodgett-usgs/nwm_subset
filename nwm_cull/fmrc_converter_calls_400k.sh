@@ -1,5 +1,6 @@
 #!/bin/bash
 Rscript nwm_subset/nwm_cull/cull_catchments.R nwm_subset/NWM_v1.2_nc_tools_v1/spatialMetadataFiles/nwm-v1.2-channel_spatial_index.nc culled_latlon.nc nwm_subset/nexus_locations/400k_comids.rds
+ncks -h -O -6 culled_latlon.nc culled_latlon.nc
 if [ ! -f 20170509.tmp ]; then
   touch 20170509.tmp
   bash nwm_subset/nwm_cull/fmrc_converter.sh 20170509_analysis_assim analysis_assim_20170509.nc /mnt/tmpfs/ nwm_subset/nwm_cull/ nwm_subset/nexus_locations/400k_comids.rds
