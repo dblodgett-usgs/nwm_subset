@@ -54,7 +54,7 @@ for r in $times; do
   file_list="$file_list $ff"
   folder_list="$folder_list $temp_dir_use"
 done
-ncrcat -h -3 $file_list $out_file > /dev/null 2>&1
+ncrcat -h -O -6 $file_list $out_file > /dev/null 2>&1
 rm $file_list
 rm -rf $folder_list
 ncks -h -A -v latitude,longitude ${latlon_path}culled_latlon.nc $out_file
