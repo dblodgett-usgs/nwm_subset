@@ -40,7 +40,7 @@ for r in $times; do
   for f in ${tt}/*; do
     ncks -h --exclude -v nudge,velocity,q_lateral,qBtmVertRunoff,qBucket,qSfcLatRunoff -O $f $f
     Rscript --vanilla ${cull_nwm_path}cull_catchments.R $f $f ${comid_list}
-		ncks  -h -O --cnk_plc g3d --cnk_dmn feature_id,1 $f $f
+		# ncks  -h -O --cnk_plc g3d --cnk_dmn feature_id,1 $f $f
   done
   ff=${temp_dir_use}/${r}.nc
   ncrcat -h ${tt}/* $ff > /dev/null 2>&1
@@ -54,11 +54,10 @@ for r in $times; do
   file_list="$file_list $ff"
   folder_list="$folder_list $temp_dir_use"
 done
-ncrcat -h --fl_fmt=netcdf4 $file_list ${temp_dir}/$out_file > /dev/null 2>&1
+ncrcat -h --fl_fmt=3 $file_list $out_file > /dev/null 2>&1
 rm $file_list
-ncks -h -A -v latitude,longitude ${latlon_path}culled_latlon.nc ${temp_dir}/$out_file
-ncks -h -O --deflate=1 ${temp_dir}/$out_file ${temp_dir}/$out_file
-ncatted -h -O -a "title,global,a,c,NWM Forcast Model Run Collection" -a "axis,time,a,c,T" -a "coordinates,streamflow,m,c,longitude latitude time reference_time" ${temp_dir}/$out_file ${temp_dir}/$out_file
-ncatted -h -O -a "model_initialization_time,global,d,," -a "model_output_valid_time,global,d,," -a "stream_order_output,global,d,," -a "model_version,global,d,," -a "dev_OVRTSWCRT,global,d,," -a "dev_NOAH_TIMESTEP,global,d,," -a "dev_channel_only,global,d,," -a "dev_channelBucket_only,global,d,," -a "dev,global,d,," -a "cdm_datatype,global,d,," -a "station_dimension,global,d,," -a "Conventions,global,m,c,CF-1.7" -a "valid_range,,d,," ${temp_dir}/$out_file $out_file
-rm ${temp_dir}/$out_file
 rm -rf $folder_list
+ncks -h -A -v latitude,longitude ${latlon_path}culled_latlon.nc $out_file
+# ncks -h -O --deflate=1 ${temp_dir}/$out_file ${temp_dir}/$out_file
+ncatted -h -O -a "title,global,a,c,NWM Forcast Model Run Collection" -a "axis,time,a,c,T" -a "coordinates,streamflow,m,c,longitude latitude time reference_time" $out_file $out_file
+ncatted -h -O -a "model_initialization_time,global,d,," -a "model_output_valid_time,global,d,," -a "stream_order_output,global,d,," -a "model_version,global,d,," -a "dev_OVRTSWCRT,global,d,," -a "dev_NOAH_TIMESTEP,global,d,," -a "dev_channel_only,global,d,," -a "dev_channelBucket_only,global,d,," -a "dev,global,d,," -a "cdm_datatype,global,d,," -a "station_dimension,global,d,," -a "Conventions,global,m,c,CF-1.7" -a "valid_range,,d,," $out_file $out_file
