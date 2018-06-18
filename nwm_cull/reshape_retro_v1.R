@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
-base <- "../../3_thredds/data/nwm_retro_full"
-out_dir <- "~/temp/temp/"
+# base <- "../../3_thredds/data/nwm_retro_full"
+# out_dir <- "~/temp/temp/"
 
 args = commandArgs(trailingOnly=TRUE)
 

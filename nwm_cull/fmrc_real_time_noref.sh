@@ -5,6 +5,7 @@ function ncattget { ncks --trd -M -m ${3} | grep -E -i "^${2} attribute [0-9]+: 
 
 in_dir=$1 # this folder should contain one model run of NWM output for one configuration.
 out_file=$2 # pick your poison
+lat_lon_file=$3 # path to latitude longitudes for the data
 
 # This is clunky, but we need to grab the scale_factor to reinject it later as the ncap2 doesn't handle it well
 in_files=${in_dir}/*.nc
@@ -25,5 +26,11 @@ ncrcat -h -O -6 ${in_dir}/*.nc $out_file # > /dev/null 2>&1 # This line will mes
 # Fix the time dimension so it is no long a "record" dimension
 ncks -h -O --fix_rec_dmn time $out_file $out_file
 
-# Add back the scale_factor!!
-ncatted -h -O -a "scale_factor,streamflow,o,f,$sf" $out_file $out_file
+# Reorder dimensions to get the output to work with THREDDS as a station datatype
+ncpdq -h -O -a feature_id,time $out_file $out_file
+
+# Add the lat_lon coordinates
+ncks -h -A $lat_lon_file $out_file
+
+# Add back the scale_factor and update coordinates to work with THREDDS as a station datatype
+ncatted -h -O -a "scale_factor,streamflow,o,f,$sf" -a "coordinates,streamflow,m,c,time longitude latitude" $out_file $out_file
