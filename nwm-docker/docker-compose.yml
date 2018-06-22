@@ -17,4 +17,6 @@ services:
     env_file:
       - "compose${THREDDS_COMPOSE_ENV_LOCAL}.env"
     healthcheck:
-          disable: true
+          disable: false
+    restart_policy:
+      condition: on-failure
