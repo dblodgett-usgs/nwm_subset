@@ -1,4 +1,4 @@
-# in_file <- "http://localhost/thredds/dodsC/nwm_retro"
+# in_file <- "http://localhost/thredds/dodsC/nwm_retro_full"
 # out_file <- "demo_nwm_retro.nc"
 # 
 # in_file <- "http://localhost/thredds/dodsC/medium_range"
@@ -23,6 +23,10 @@ new_feature_id_dim <- ncdim_def(nc$dim$feature_id$name,
                                 vals = c(1:length(new_feature_id)), 
                                 create_dimvar = F)
 
+feature_id_dimid <- nc$dim$feature_id$id
+time_dimid <- nc$dim$time$id
+streamflow_dimids <- nc$var$streamflow$dimids
+
 if(!"reference_time" %in% names(nc$dim)) {
   
   time_dim <- ncdim_def(nc$dim$time$name, 
@@ -30,12 +34,21 @@ if(!"reference_time" %in% names(nc$dim)) {
                         vals = nc$dim$time$vals, 
                         unlim = FALSE, create_dimvar = T)
   
+  # !! Axis Order Note !! #
+  # Always write output with feature_id varying fastest.
   vars <- list(ncvar_def(nc$var$streamflow$name, 
                          units = nc$var$streamflow$units, 
                          prec = "integer",
-                         dim = list(new_feature_id_dim, 
-                                    time_dim)))
+                         dim = list(time_dim,
+                                    new_feature_id_dim),
+                         chunksizes = c(nc$dim$time$len,1.), 
+                         compression = 1))
+  
+  # Code below expects c(time,fid) order -- this will fix if its switched.
+  dimid_order <- match(streamflow_dimids, c(time_dimid, feature_id_dimid))
+  
 } else {
+  reference_time_dimid <- nc$dim$reference_time$id
   
   time_dim <- ncdim_def(nc$dim$time$name, 
                         units = "", 
@@ -47,6 +60,8 @@ if(!"reference_time" %in% names(nc$dim)) {
                                   vals = 1:length(nc$dim$reference_time$vals),
                                   create_dimvar = FALSE)
   
+  # !! Axis Order Note !! #
+  # Always write output with reference_time varying fastest.
   vars <- list(ncvar_def(nc$var$streamflow$name, 
                          units = nc$var$streamflow$units, 
                          prec = "integer",
@@ -56,6 +71,9 @@ if(!"reference_time" %in% names(nc$dim)) {
                ncvar_def(nc$dim$reference_time$name,
                          units = nc$dim$reference_time$units,
                          dim = reference_time_dim))
+  
+  # Code below expects c(fid,time,reference_time) order -- this will fix if its switched.
+  dimid_order <- match(streamflow_dimids, c(feature_id_dimid, time_dimid, reference_time_dimid))
 }
 
 vars <- c(vars, 
@@ -70,7 +88,7 @@ vars <- c(vars,
                          units = nc$var$longitude$units,
                          dim = new_feature_id_dim)))
 
-new_nc <- nc_create(out_file, vars)
+new_nc <- nc_create(out_file, vars, force_v4 = TRUE)
 
 for(var in c(nc$var, nc$dim, list(list(name = 0)))) {
   atts <- ncatt_get(nc, var$name)
@@ -78,27 +96,25 @@ for(var in c(nc$var, nc$dim, list(list(name = 0)))) {
 }
 
 nc_close(new_nc)
+
 new_nc <- nc_open(out_file, write = TRUE)
 
-dimids <- nc$var$streamflow$dimids
-
 for(s in 1:length(site_inds)) {
-  if(length(dimids) == 2) {
-    # Note axis order is assumed here!!!
+  if(length(dimid_order) == 2) {
+    # Axis order here is always written as the initialization creates above.
+    # Axis order reads are flexible based on the dimid_order.
     ncvar_put(new_nc, new_nc$var$streamflow,
               ncvar_get(nc, nc$var$streamflow,
-                        start = c(site_inds[s], 1),
-                        count = c(1, -1), raw_datavals = TRUE),
-              start = c(s, 1), count = c(1, -1))
-  } else if(length(dimids) == 3) {
-    for(r in 1:nc$dim$reference_time$len) {
-      ncvar_put(new_nc, new_nc$var$streamflow,
-                ncvar_get(nc, nc$var$streamflow,
-                          start = c(site_inds[s], 1, r),
-                          count = c(1, -1, 1), raw_datavals = TRUE),
-                start = c(s, 1, r),
-                count = c(1, -1, 1))
-    }
+                        start = c(1,site_inds[s])[dimid_order],
+                        count = c(-1, 1)[dimid_order], raw_datavals = TRUE),
+              start = c(1, s), count = c(-1, 1))
+  } else if(length(dimid_order) == 3) {
+    ncvar_put(new_nc, new_nc$var$streamflow,
+              ncvar_get(nc, nc$var$streamflow,
+                        start = c(site_inds[s], 1, 1)[dimid_order],
+                        count = c(1, -1, -1)[dimid_order], raw_datavals = TRUE),
+              start = c(s, 1, 1),
+              count = c(1, -1, -1))
   }
 }
 
