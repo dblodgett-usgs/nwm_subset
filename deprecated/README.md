@@ -1,0 +1,1 @@
+This directory contains dprecated scripts that will not be reuesed but may be useful for future reference.
