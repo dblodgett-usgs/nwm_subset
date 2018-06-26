@@ -2,7 +2,6 @@ library(dplyr)
 library(sf)
 library(nhdplusTools)
 
-setwd("~/Documents/Projects/NWM/2_code/nwm_output/nexus_locations")
 flowlines <- readRDS("../../nhdplus_refactor/nhdplus_flowlines.rds")
 
 flines <- prepare_nhdplus(flowlines, 0, 0, purge_non_dendritic = FALSE)

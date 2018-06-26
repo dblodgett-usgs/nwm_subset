@@ -2,8 +2,7 @@ library(dplyr)
 library(sf)
 library(RANN)
 
-setwd("~/Documents/Projects/NWM/2_code/nwm_output/nexus_locations")
-data_dir <- "../../../1_data/"
+data_dir <- "../../1_data/"
 gages_iii_dir <- "gageloc"
 sparrow_dir <- "sparrow"
 NHDPlus_GageLoc_dir <- "NHDPlusNationalData"

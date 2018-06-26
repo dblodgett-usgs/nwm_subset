@@ -1,0 +1,1 @@
+This directory contains processing artifacts for generation of standard nexus\_location sets.
