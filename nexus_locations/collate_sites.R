@@ -8,7 +8,7 @@ sparrow_dir <- "sparrow"
 NHDPlus_GageLoc_dir <- "NHDPlusNationalData"
 NHDPointEvents_dir <- "NHDPointEvents_fgdb.gdb"
 ahps_dir <- "ahps"
-nwm_v1dot2_nc <- "../NWM_v1.2_nc_tools_v1/spatialMetadataFiles/nwm-v1.2-channel_spatial_index.nc"
+nwm_v1dot2_nc <- "NWM_v1.2_nc_tools_v1/spatialMetadataFiles/nwm-v1.2-channel_spatial_index.nc"
 
 gages_iii <- sf::st_read(file.path(data_dir, gages_iii_dir, "CATCHMENT_gageloc_v1.shp"),
                          stringsAsFactors = FALSE) %>%
@@ -19,15 +19,19 @@ sparrow <- readr::read_csv(file.path(data_dir, sparrow_dir, "flow_est.txt"))
 
 ahps <- readr::read_csv(file.path(data_dir, ahps_dir, "station.csv"))
 
-real_time_nwis <- sf::st_read("https://www.waterqualitydata.us/sites/?siteStatus=active&hasDataTypeCd=iv",
-                              stringsAsFactors = FALSE)
-real_time_nwis <- cbind(real_time_nwis, sf::st_coordinates(real_time_nwis))
+# Note that this list changes!!! 
+# real_time_nwis <- sf::st_read("https://www.waterqualitydata.us/sites/?siteStatus=active&hasDataTypeCd=iv",
+#                               stringsAsFactors = FALSE)
+# real_time_nwis <- cbind(real_time_nwis, sf::st_coordinates(real_time_nwis))
+
+# This file was accessed 6-8-2018
+real_time_nwis <- readRDS("nexus_locations/real_time_nwis_06082018.rds")
 
 NHDPlus_GageLoc <- sf::st_read(file.path(data_dir, NHDPlus_GageLoc_dir, "GageLoc.shp"),
                                stringsAsFactors = FALSE)
 NHDPlus_GageLoc <- cbind(NHDPlus_GageLoc, sf::st_coordinates(NHDPlus_GageLoc))
 
-flowlines <- readRDS("../../nhdplus_refactor/nhdplus_flowlines_geo.rds")
+flowlines <- readRDS("../../2_code/nhdplus_refactor/nhdplus_flowlines_geo.rds")
 
 sites <- unique(c(gages_iii$Gage_no,
                   sparrow$station_id,
@@ -76,10 +80,10 @@ gc()
 missing_sites <- dataRetrieval::readNWISsite(
   siteNumbers = sites[["site_id"]][which(is.na(sites$lat))])
 
-sf::st_write(sf::st_as_sf(missing_sites, 
-                  coords = c("dec_long_va", "dec_lat_va"), 
-                  crs = 4269),
-             "missing_sites.shp")
+# sf::st_write(sf::st_as_sf(missing_sites, 
+#                   coords = c("dec_long_va", "dec_lat_va"), 
+#                   crs = 4269),
+#              "missing_sites.shp")
 
 sites <- left_join(sites, select(missing_sites,
                                  site_id = site_no,
@@ -148,17 +152,17 @@ sites <- filter(sites, !is.na(COMID)) %>%
 
 sites <- sf::st_as_sf(sites, coords = c("lon", "lat"), crs = 4326)
 
-unlink("linked_sites.gpkg")
-sf::st_write(sites, "linked_sites.gpkg")
+# unlink("nexus_locations/linked_sites.gpkg")
+# sf::st_write(sites, "nexus_locations/linked_sites.gpkg")
 
 nwm_comids <- ncdf4::nc_open(nwm_v1dot2_nc)$dim$feature_id$vals
-# v1_comids <- readRDS("nwm_v1_comids.rds")
-# nwm_comids <- as.integer(nwm_comids[nwm_comids %in% v1_comids])
-all_comids <- unique(as.integer(c(readRDS("confluence_comids.rds")$COMID, sites$COMID)))
-all_comids <- all_comids[all_comids %in% nwm_comids]
+v1_comids <- readRDS("nexus_locations/nwm_v1_comids.rds")
+nwm_comids <- as.integer(nwm_comids[nwm_comids %in% v1_comids])
+all_comids <- unique(as.integer(c(readRDS("nexus_locations/confluence_comids.rds")$COMID, sites$COMID)))
+all_comids <- unique(all_comids[all_comids %in% nwm_comids])
 
-saveRDS(all_comids, "comids.rds")
+# saveRDS(all_comids, "nexus_locations/v1andv2_comids.rds")
 
-confluence_comids <- unique(readRDS("confluence_comids.rds"))
-unlink("confluences.gpkg")
-sf::st_write(confluence_comids, "confluences.gpkg")
+confluence_comids <- unique(readRDS("nexus_locations/confluence_comids.rds"))
+# unlink("nexus_locations/confluences.gpkg")
+# sf::st_write(confluence_comids, "nexus_locations/confluences.gpkg")
