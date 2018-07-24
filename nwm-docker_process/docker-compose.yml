@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  nwm-process:
+    build: .
+    container_name: nwm-process
+    volumes:
+      - ../:/nwm/
+    healthcheck:
+          disable: true

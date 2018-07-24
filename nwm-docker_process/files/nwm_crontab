@@ -1,0 +1,7 @@
+5 * * * * root cd /nwm/content/; Rscript /nwm/bin/run_realtime.R aa
+10 * * * * root cd /nwm/content/; Rscript /nwm/bin/run_realtime.R sr
+15 * * * * root cd /nwm/content/; Rscript /nwm/bin/run_realtime.R mr
+25 * * * * root cd /nwm/content/; Rscript /nwm/bin/run_realtime.R lr1
+35 * * * * root cd /nwm/content/; Rscript /nwm/bin/run_realtime.R lr2
+45 * * * * root cd /nwm/content/; Rscript /nwm/bin/run_realtime.R lr3
+55 * * * * root cd /nwm/content/; Rscript /nwm/bin/run_realtime.R lr4

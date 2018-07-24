@@ -14,8 +14,8 @@ USER root
     
 RUN \
     apt-get -y update; \
-    apt-get -y install nco netcdf-bin
-
+    apt-get -y install netcdf-bin
+    
 RUN mkdir /downloads
 
 WORKDIR /downloads
@@ -46,13 +46,13 @@ RUN unzip thredds.war -d ${CATALINA_HOME}/webapps/thredds/
 
 RUN mkdir -p ${CATALINA_HOME}/content/thredds
 
-COPY files/threddsConfig.xml ${CATALINA_HOME}/content/thredds/threddsConfig.xml
+# COPY files/threddsConfig.xml ${CATALINA_HOME}/content/thredds/threddsConfig.xml
 
 ###
 # Tomcat users
 ###
 
-COPY files/tomcat-users.xml ${CATALINA_HOME}/conf/tomcat-users.xml
+# COPY files/tomcat-users.xml ${CATALINA_HOME}/conf/tomcat-users.xml
 
 ###
 # Tomcat Java Options
@@ -97,6 +97,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 ###
 
 CMD ["catalina.sh", "run"]
+
 
 HEALTHCHECK --interval=60s --timeout=20s \
 	CMD curl --fail 'http://localhost:8080/thredds/catalog.html' || exit 1
