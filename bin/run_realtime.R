@@ -30,10 +30,10 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir) {
     list(aa = list(dir = "analysis_assim", fi = "analysis_assim", exp_fis = 3),
          sr = list(dir = "short_range", fi = "short_range", exp_fis = 18),
          mr = list(dir = "medium_range", fi = "medium_range", exp_fis = 80),
-         lr1 = list(dir = "long_range_mem1", fi = "long_range_mem1", exp_fis = 120),
-         lr2 = list(dir = "long_range_mem2", fi = "long_range_mem2", exp_fis = 120),
-         lr3 = list(dir = "long_range_mem3", fi = "long_range_mem3", exp_fis = 120),
-         lr4 = list(dir = "long_range_mem4", fi = "long_range_mem4", exp_fis = 120))
+         lr1 = list(dir = "long_range_mem1", fi = "long_range", exp_fis = 120),
+         lr2 = list(dir = "long_range_mem2", fi = "long_range", exp_fis = 120),
+         lr3 = list(dir = "long_range_mem3", fi = "long_range", exp_fis = 120),
+         lr4 = list(dir = "long_range_mem4", fi = "long_range", exp_fis = 120))
   
   nomads_url <- "http://nomads.ncep.noaa.gov/pub/data/nccf/com/nwm/prod"
   wget_base <- "wget -r -np -nH --cut-dirs=8 -q -A"
