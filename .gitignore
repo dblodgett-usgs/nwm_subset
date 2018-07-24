@@ -7,3 +7,6 @@ temp
 *latlon.nc
 png
 content/data
+content/logs
+content/cache
+content/wmsConfig.xml

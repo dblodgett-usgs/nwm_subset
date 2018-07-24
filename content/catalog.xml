@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="NWM Local Testing Catalog" xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0            http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.6.xsd">
+  <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/"/>
+  <service name="all" serviceType="Compound" base="">
+    <service name="opendap" serviceType="OPENDAP" base="/thredds/dodsC/"/>
+    <service name="ncssGrid" serviceType="NetcdfSubset Grid" base="/thredds/ncss/grid/"/>
+    <service name="ncssPoint" serviceType="NetcdfSubset Point" base="/thredds/ncss/point/"/>
+  </service>
+  <dataset name="Analysis and Assimilation Latest Run" ID="analysis_assim_latest" urlPath="analysis_assim_latest">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/analysis_assim/noref/latest.nc">
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Short Range Latest Run" ID="short_range_latest" urlPath="short_range_latest">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/short_range/noref/latest.nc">
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Medium Range Latest Run" ID="medium_range_latest" urlPath="medium_range_latest">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/medium_range/noref/latest.nc">
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Long Range Member 1 Latest Run" ID="long_range_mem1_latest" urlPath="long_range_mem1_latest">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/long_range_mem1/noref/latest.nc">
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Long Range Member 2 Latest Run" ID="long_range_mem2_latest" urlPath="long_range_mem2_latest">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/long_range_mem2/noref/latest.nc">
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Long Range Member 3 Latest Run" ID="long_range_mem3_latest" urlPath="long_range_mem3_latest">
+    <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/long_range_mem3/noref/latest.nc">
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Long Range Member 4 Latest Run" ID="long_range_mem4_latest" urlPath="long_range_mem4_latest">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/long_range_mem4/noref/latest.nc">
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Analysis and Assimilation Latest Day" ID="analysis_assim" urlPath="analysis_assim">
+    <serviceName>odap</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false">
+      <aggregation type="joinExisting" dimName="reference_time">
+        <scan location="/data/analysis_assim/ref/" suffix=".nc" subdirs="false"/>
+      </aggregation>
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Short Range Latest Day" ID="short_range" urlPath="short_range">
+    <serviceName>odap</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false">
+      <aggregation type="joinExisting" dimName="reference_time">
+        <scan location="/data/short_range/ref/" suffix=".nc" subdirs="false"/>
+      </aggregation>
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Medium Range Latest Day" ID="medium_range" urlPath="medium_range">
+    <serviceName>odap</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false">
+      <aggregation type="joinExisting" dimName="reference_time">
+        <scan location="/data/medium_range/ref/" suffix=".nc" subdirs="false"/>
+      </aggregation>
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Long Range Member 1 Latest Day" ID="long_range_mem1" urlPath="long_range_mem1">
+    <serviceName>odap</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false">
+      <aggregation type="joinExisting" dimName="reference_time">
+        <scan location="/data/long_range_mem1/ref/" suffix=".nc" subdirs="false"/>
+      </aggregation>
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Long Range Member 2 Latest Day" ID="long_range_mem2" urlPath="long_range_mem2">
+    <serviceName>odap</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false">
+      <aggregation type="joinExisting" dimName="reference_time">
+        <scan location="/data/long_range_mem2/ref/" suffix=".nc" subdirs="false"/>
+      </aggregation>
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Long Range Member 3 Latest Day" ID="long_range_mem3" urlPath="long_range_mem3">
+    <serviceName>odap</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false">
+      <aggregation type="joinExisting" dimName="reference_time">
+        <scan location="/data/long_range_mem3/ref/" suffix=".nc" subdirs="false"/>
+      </aggregation>
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+  <dataset name="Long Range Member 4 Latest Day" ID="long_range_mem4" urlPath="long_range_mem4">
+    <serviceName>odap</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false">
+      <aggregation type="joinExisting" dimName="reference_time">
+        <scan location="/data/long_range_mem4/ref/" suffix=".nc" subdirs="false"/>
+      </aggregation>
+      <remove type="attribute" name="proj4"/>
+      <remove type="attribute" name="esri_pe_string"/>
+      <remove type="attribute" name="stream_order_output"/>
+      <remove type="attribute" name="dev_OVRTSWCRT"/>
+      <remove type="attribute" name="dev_NOAH_TIMESTEP"/>
+      <remove type="attribute" name="dev_channel_only"/>
+      <remove type="attribute" name="dev_channelBucket_only"/>
+      <remove type="attribute" name="dev"/>
+    </netcdf>
+  </dataset>
+</catalog>
