@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# This function requires an up to date nco -- will fail with old versions.
-function ncattget { ncks --trd -M -m ${3} | grep -E -i "^${2} attribute [0-9]+: ${1}" | cut -f 11- -d ' ' | sort ; }
+source ncattget.sh
 
 in_dir=$1 # this folder should contain one model run of NWM output for one configuration.
 out_file=$2 # pick your poison

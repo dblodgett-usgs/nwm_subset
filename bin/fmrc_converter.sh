@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function ncattget { ncks -M -m ${3} | grep -E -i "^${2} attribute [0-9]+: ${1}" | cut -f 11- -d ' ' | sort ; }
+source ncattget.sh
 
 in_spec=$1
 out_file=$2
