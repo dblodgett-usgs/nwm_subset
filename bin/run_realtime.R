@@ -66,24 +66,7 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir, config_l
   out_file_ref <- sprintf("%s/%s_%s.nc", out_dir_ref, day_folder, hour_string)
   out_file_ref_proc <- sprintf("%s/%s_%s.nc", proc_dir, day_folder, hour_string)
   
-  # retry builder
-  dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
-  in_place <- list.files(out_dir_ref, full.names = TRUE)
-  expected_files <- config_lookup[[configuration]]$times
-  expected_file_paths <- sprintf("%s/%s_%s.nc", out_dir_ref, day_folder, expected_files)
-  too_old <- in_place[which(difftime(Sys.time(), file.info(in_place)$mtime, units = "hours") > 24)]
-  missing <- c(expected_files[which(!expected_file_paths %in% in_place)],
-               regmatches(too_old, regexpr("t[0-9][0-9]z", too_old)))
-  
-  for(missed in missing) {
-    print(paste(Sys.time(), "missing", configuration, day_folder, missed))
-    system(paste0("touch ", retry_dir,"/", configuration, "__", day_folder, "__", missed))
-  }
-  
-  for(to in too_old) {
-    unlink(too_old)
-  }
-  
+  if(!file.exists(out_file_ref)) {
   # main wget call
   try({
     system(sprintf('%s "*%s.%s.%s*" -P %s %s/%s/%s/',
@@ -126,7 +109,30 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir, config_l
     dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
     system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
   }
+  }
   unlink(proc_dir, recursive = TRUE)
+  
+  # retry builder
+  dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
+  in_place <- list.files(out_dir_ref, full.names = TRUE)
+  expected_files <- config_lookup[[configuration]]$times
+  expected_file_paths <- sprintf("%s/%s_%s.nc", out_dir_ref, day_folder, expected_files)
+  too_old <- in_place[which(difftime(Sys.time(), file.info(in_place)$mtime, units = "hours") > 24)]
+  missing <- c(expected_files[which(!expected_file_paths %in% in_place)],
+               regmatches(too_old, regexpr("t[0-9][0-9]z", too_old)))
+  
+  for(missed in missing) {
+    m <- paste0(configuration, "__", day_folder, "__", missed)
+    if(!m %in% list.files(retry_dir)) {
+      print(paste(Sys.time(), "missing", configuration, day_folder, missed))
+      system(paste0("touch ", retry_dir,"/", m))
+    }
+  }
+  
+  for(to in too_old) {
+    unlink(too_old)
+  }
+  
 }
 
 day_folder <- paste0("nwm.", format((Sys.time() - 3600), "%Y%m%d", tz = "UTC"))
