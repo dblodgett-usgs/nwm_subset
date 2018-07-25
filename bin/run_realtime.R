@@ -3,7 +3,7 @@
 args = commandArgs(trailingOnly=TRUE)
 
 if (length(args)<1) {
-  stop("one or more comma seperated configuration names only \n mr, sr, aa, lr1, lr2, lr3, lr4", call.=FALSE)
+  stop("one or more comma seperated configuration names only \n mr,sr,aa,lr1,lr2,lr3,lr4", call.=FALSE)
 } else if (length(args)==1) {
   configuration <- args[[1]]
 }
@@ -11,6 +11,10 @@ if (length(args)<1) {
 log_file <- "logs/process_log"
 
 sink(log_file, append = TRUE)
+
+####################
+# Global Constants #
+####################
 
 t1 <- c("t00z", "t06z", "t12z", "t18z")
 t2 <- c("t00z", "t01z", "t02z", "t03z", "t04z", 
@@ -30,17 +34,28 @@ config_lookup <-
 
 retry_dir <- "./data/retry"
 
+###################
+# Runner Function #
+###################
+
 run_func <- function(configuration, day_folder, hour_string, retry_dir, config_lookup) {
   
+  # wget constants
   nomads_url <- "http://nomads.ncep.noaa.gov/pub/data/nccf/com/nwm/prod"
   wget_base <- "wget -r -np -nH --cut-dirs=8 -q -A"
   file_type <- "channel_rt"
-  data_dir <- "./data/"
-  proc_dir <- paste0("./data/proc", as.numeric(Sys.time()))
-  dir.create(proc_dir, showWarnings = FALSE, recursive = TRUE)
+  
+  # lat/lon data for noref file type
   lat_lon_file <- "../NWM_v1.2_nc_tools_v1/spatialMetadataFiles/nwm-v1.2-channel_spatial_index.nc"
   
+  # data and processing paths
+  data_dir <- "./data/"
+  
+  proc_dir <- paste0("./data/proc", as.numeric(Sys.time()))
+  dir.create(proc_dir, showWarnings = FALSE, recursive = TRUE)
+  
   out_dir <-  paste0(data_dir, config_lookup[[configuration]]$dir)
+  
   out_dir_noref <-paste0(out_dir, "/noref")
   dir.create(out_dir_noref, showWarnings = FALSE, recursive = TRUE)
   out_dir_ref <- paste0(out_dir, "/ref")
@@ -48,12 +63,14 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir, config_l
   
   out_file_noref <- sprintf("%s/%s.nc", out_dir_noref, "latest")
   out_file_noref_proc <- sprintf("%s/%s.nc", proc_dir, "latest")
-  out_file_ref <- sprintf("%s/%s.nc", out_dir_ref, hour_string)
-  out_file_ref_proc <- sprintf("%s/%s.nc", proc_dir, hour_string)
+  out_file_ref <- sprintf("%s/%s_%s.nc", out_dir_ref, day_folder, hour_string)
+  out_file_ref_proc <- sprintf("%s/%s_%s.nc", proc_dir, day_folder, hour_string)
   
+  # retry builder
+  dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
   in_place <- list.files(out_dir_ref, full.names = TRUE)
   expected_files <- config_lookup[[configuration]]$times
-  expected_file_paths <- sprintf("%s/%s.nc", out_dir_ref, expected_files)
+  expected_file_paths <- sprintf("%s/%s_%s.nc", out_dir_ref, day_folder, expected_files)
   too_old <- in_place[which(difftime(Sys.time(), file.info(in_place)$mtime, units = "hours") > 24)]
   missing <- c(expected_files[which(!expected_file_paths %in% in_place)],
                regmatches(too_old, regexpr("t[0-9][0-9]z", too_old)))
@@ -63,6 +80,11 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir, config_l
     system(paste0("touch ", retry_dir,"/", configuration, "__", day_folder, "__", missed))
   }
   
+  for(to in too_old) {
+    unlink(too_old)
+  }
+  
+  # main wget call
   try({
     system(sprintf('%s "*%s.%s.%s*" -P %s %s/%s/%s/',
                    wget_base,
@@ -75,39 +97,36 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir, config_l
                    config_lookup[[configuration]]$dir))
   }, silent = FALSE)
   
+  # if download worked
   if(length(list.files(proc_dir)) == config_lookup[[configuration]]$exp_fis) {
     
     tryCatch({
+      # main nco conversion call
       system(sprintf("../bin/fmrc_real_time_both.sh %s %s %s %s",
                      proc_dir,
                      out_file_noref_proc,
                      out_file_ref_proc,
                      lat_lon_file))
       
+      # move files when done
       file.rename(out_file_noref_proc, out_file_noref)
       file.rename(out_file_ref_proc, out_file_ref)
       
     }, error = function(e) {
       print(paste(Sys.time(), "Error in processing was", e, "\n Adding to retry."))
-      dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
       system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
     })
     
   } else {
-    
     if(length(list.files(proc_dir)) > 0) {
       print(paste(Sys.time(), "Unexpected number of files downloaded. Got", length(list.files(proc_dir)),
             "Expected", config_lookup[[configuration]]$exp_fis))
     }
-    
     print(paste(Sys.time(), "No Data Downloaded. Adding to retry."))
     dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
     system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
-    
   }
-    
   unlink(proc_dir, recursive = TRUE)
-  
 }
 
 day_folder <- paste0("nwm.", format((Sys.time() - 3600), "%Y%m%d", tz = "UTC"))
