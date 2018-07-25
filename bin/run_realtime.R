@@ -8,7 +8,7 @@ if (length(args)<1) {
   configuration <- args[[1]]
 }
 
-log_file <- "../logs/process_log"
+log_file <- "logs/process_log"
 
 sink(log_file, append = TRUE)
 

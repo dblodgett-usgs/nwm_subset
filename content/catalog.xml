@@ -3,7 +3,6 @@
   <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/"/>
   <service name="all" serviceType="Compound" base="">
     <service name="opendap" serviceType="OPENDAP" base="/thredds/dodsC/"/>
-    <service name="ncssGrid" serviceType="NetcdfSubset Grid" base="/thredds/ncss/grid/"/>
     <service name="ncssPoint" serviceType="NetcdfSubset Point" base="/thredds/ncss/point/"/>
   </service>
   <dataset name="Analysis and Assimilation Latest Run" ID="analysis_assim_latest" urlPath="analysis_assim_latest">

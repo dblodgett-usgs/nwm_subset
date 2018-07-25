@@ -34,5 +34,5 @@ RUN crontab /etc/cron.d/nwm_crontab
 # Start container
 ###
 
-CMD cron && tail -f /nwm/content/data/log
+CMD cron && touch /nwm/content/logs/process_log && tail -f /nwm/content/logs/process_log
 
