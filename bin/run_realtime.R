@@ -74,14 +74,19 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir) {
                      out_file_ref,
                      lat_lon_file))
     }, error = function(e) {
-      print(paste("Error in processing was", e, "\n Adding to retry."))
+      print(paste(Sys.time(), "Error in processing was", e, "\n Adding to retry."))
       dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
       system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
     })
     
   } else {
     
-    print(paste("No Data Downloaded. Adding to retry."))
+    if(length(list.files(proc_dir)) > 0) {
+      print(paste(Sys.time(), "Unexpected number of files downloaded. Got", length(list.files(proc_dir)),
+            "Expected", config_lookup[[configuration]]$exp_fis))
+    }
+    
+    print(paste(Sys.time(), "No Data Downloaded. Adding to retry."))
     dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
     system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
     
@@ -103,17 +108,17 @@ for(retry_run in list.files(retry_dir)) {
   if(strptime(retry_run[2], format = "nwm.%Y%m%d", tz = "UTC") > 
      (Sys.time() - (2 * 24 * 60 * 60))) {
     
-    print(paste("Retrying:", paste(retry_run, collapse = " ")))
+    print(paste(Sys.time(), "Retrying:", paste(retry_run, collapse = " ")))
     
     run_func(retry_run[1], retry_run[2], retry_run[3], retry_dir)
   } else {
-    print(paste("Retry", paste(retry_run, collapse = " "), "too old. Deleting."))
+    print(paste(Sys.time(), "Retry", paste(retry_run, collapse = " "), "too old. Deleting."))
   }
 }
 
 if(hour_string %in% times[[configuration]]) {
   
-  print(paste("Running:",configuration, day_folder, hour_string))  
+  print(paste(Sys.time(), "Running:",configuration, day_folder, hour_string))  
   
   run_func(configuration, day_folder, hour_string, retry_dir)
   
