@@ -67,48 +67,48 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir, config_l
   out_file_ref_proc <- sprintf("%s/%s_%s.nc", proc_dir, day_folder, hour_string)
   
   if(!file.exists(out_file_ref)) {
-  # main wget call
-  try({
-    system(sprintf('%s "*%s.%s.%s*" -P %s %s/%s/%s/',
-                   wget_base,
-                   hour_string,
-                   config_lookup[[configuration]]$fi,
-                   file_type,
-                   proc_dir,
-                   nomads_url,
-                   day_folder,
-                   config_lookup[[configuration]]$dir))
-  }, silent = FALSE)
-  
-  # if download worked
-  if(length(list.files(proc_dir)) == config_lookup[[configuration]]$exp_fis) {
-    
-    tryCatch({
-      # main nco conversion call
-      system(sprintf("../bin/fmrc_real_time_both.sh %s %s %s %s",
+    # main wget call
+    try({
+      system(sprintf('%s "*%s.%s.%s*" -P %s %s/%s/%s/',
+                     wget_base,
+                     hour_string,
+                     config_lookup[[configuration]]$fi,
+                     file_type,
                      proc_dir,
-                     out_file_noref_proc,
-                     out_file_ref_proc,
-                     lat_lon_file))
-      
-      # move files when done
-      file.rename(out_file_noref_proc, out_file_noref)
-      file.rename(out_file_ref_proc, out_file_ref)
-      
-    }, error = function(e) {
-      print(paste(Sys.time(), "Error in processing was", e, "\n Adding to retry."))
-      system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
-    })
+                     nomads_url,
+                     day_folder,
+                     config_lookup[[configuration]]$dir))
+    }, silent = FALSE)
     
-  } else {
-    if(length(list.files(proc_dir)) > 0) {
-      print(paste(Sys.time(), "Unexpected number of files downloaded. Got", length(list.files(proc_dir)),
-            "Expected", config_lookup[[configuration]]$exp_fis))
+    # if download worked
+    if(length(list.files(proc_dir)) == config_lookup[[configuration]]$exp_fis) {
+      
+      tryCatch({
+        # main nco conversion call
+        system(sprintf("../bin/fmrc_real_time_both.sh %s %s %s %s",
+                       proc_dir,
+                       out_file_noref_proc,
+                       out_file_ref_proc,
+                       lat_lon_file))
+        
+        # move files when done
+        file.rename(out_file_noref_proc, out_file_noref)
+        file.rename(out_file_ref_proc, out_file_ref)
+        
+      }, error = function(e) {
+        print(paste(Sys.time(), "Error in processing was", e, "\n Adding to retry."))
+        system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
+      })
+      
+    } else {
+      if(length(list.files(proc_dir)) > 0) {
+        print(paste(Sys.time(), "Unexpected number of files downloaded. Got", length(list.files(proc_dir)),
+                    "Expected", config_lookup[[configuration]]$exp_fis))
+      }
+      print(paste(Sys.time(), "No Data Downloaded. Adding to retry."))
+      dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
+      system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
     }
-    print(paste(Sys.time(), "No Data Downloaded. Adding to retry."))
-    dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
-    system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
-  }
   }
   unlink(proc_dir, recursive = TRUE)
   
