@@ -135,25 +135,29 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir, config_l
   
 }
 
+retry_fun <- function(retry_dir, config_lookup) {
+  for(retry_run in list.files(retry_dir)) {
+    
+    unlink(file.path(retry_dir, retry_run))
+    
+    retry_run <- strsplit(retry_run, "__")[[1]]
+    
+    if(strptime(retry_run[2], format = "nwm.%Y%m%d", tz = "UTC") > 
+       (Sys.time() - (2 * 24 * 60 * 60))) {
+      
+      print(paste(Sys.time(), "Retrying:", paste(retry_run, collapse = " ")))
+      
+      run_func(retry_run[1], retry_run[2], retry_run[3], retry_dir, config_lookup)
+    } else {
+      print(paste(Sys.time(), "Retry", paste(retry_run, collapse = " "), "too old. Deleting."))
+    }
+  }
+}
+
 day_folder <- paste0("nwm.", format((Sys.time() - 3600), "%Y%m%d", tz = "UTC"))
 hour_string <- paste0("t", format((Sys.time() - 3600), "%H", tz = "UTC"), "z")
 
-for(retry_run in list.files(retry_dir)) {
-  
-  unlink(file.path(retry_dir, retry_run))
-  
-  retry_run <- strsplit(retry_run, "__")[[1]]
-  
-  if(strptime(retry_run[2], format = "nwm.%Y%m%d", tz = "UTC") > 
-     (Sys.time() - (2 * 24 * 60 * 60))) {
-    
-    print(paste(Sys.time(), "Retrying:", paste(retry_run, collapse = " ")))
-    
-    run_func(retry_run[1], retry_run[2], retry_run[3], retry_dir, config_lookup)
-  } else {
-    print(paste(Sys.time(), "Retry", paste(retry_run, collapse = " "), "too old. Deleting."))
-  }
-}
+retry_fun(retry_dir, config_lookup)
 
 configurations <- strsplit(configuration, ",")[[1]]
 
@@ -168,5 +172,7 @@ for(configuration in configurations) {
   }
   
 }
+
+retry_fun(retry_dir, config_lookup)
 
 sink()
