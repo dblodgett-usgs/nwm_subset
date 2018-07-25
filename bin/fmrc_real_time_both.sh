@@ -11,9 +11,19 @@ else
 fi
 
 in_dir=$1 # this folder should contain one model run of NWM output for one configuration.
-out_file_noref=$2 # pick your poison
-out_file_ref=$3
+out_file_noref=$2 # pick your poison can be "null" to skip
+out_file_ref=$3 # pick your poison can be "null" to skip
 lat_lon_file=$4 # path to latitude longitudes for the data
+
+if [ $out_file_noref != "null" ]; then
+  temp_file=$out_file_noref
+else
+  if [ $out_file_ref = "null" ]; then
+    echo both output files can not be null
+    exit 1
+  fi
+  temp_file=$out_file_ref
+fi
 
 # This is clunky, but we need to grab the scale_factor to reinject it later as the ncap2 doesn't handle it well
 in_files=${in_dir}/*.nc
@@ -29,25 +39,30 @@ done
 
 # concatenate the file set together along the time record dimension.
 # Also convert to NetCDF3 64 bit offset to get rid of problematic chunking.
-ncrcat -h -O -6 ${in_dir}/*.nc $out_file_noref # > /dev/null 2>&1 # This line will message to the console. 
+ncrcat -h -O -6 ${in_dir}/*.nc $temp_file # > /dev/null 2>&1 # This line will message to the console. 
 
 # Fix the time dimension so it is no long a "record" dimension
-ncks -h -O --fix_rec_dmn time $out_file_noref $out_file_noref
+ncks -h -O --fix_rec_dmn time $temp_file $temp_file
 
-cp $out_file_noref $out_file_ref
+if [ $out_file_ref != "null" ]; then
+  
+  if [ $temp_file = $out_file_noref ]; then
+    cp $temp_file $out_file_ref
+  fi
+  # Add a reference_time dimension to time and streamflow so we can aggregate along reference_time later.
+  ncap2 -h -O -s 'streamflow[$reference_time,$time,$feature_id]=streamflow; time[$reference_time,$time]=time' $out_file_ref $out_file_ref
 
-# Reorder dimensions to get the output to work with THREDDS as a station datatype
-ncpdq -h -O -a feature_id,time $out_file_noref $out_file_noref
+  # Add back the scale_factor!!
+  ncatted -h -O -a "scale_factor,streamflow,o,f,$sf" $out_file_ref $out_file_ref
+fi
 
-# Add back the scale_factor and update coordinates to work with THREDDS as a station datatype
-ncatted -h -O -a "scale_factor,streamflow,o,f,$sf" -a "coordinates,streamflow,m,c,time longitude latitude" $out_file_noref $out_file_noref
+if [ $out_file_noref != "null" ]; then
+  # Reorder dimensions to get the output to work with THREDDS as a station datatype
+  ncpdq -h -O -a feature_id,time $out_file_noref $out_file_noref
 
-# Add the lat_lon coordinates
-ncks -h -A $lat_lon_file $out_file_noref
+  # Add back the scale_factor and update coordinates to work with THREDDS as a station datatype
+  ncatted -h -O -a "scale_factor,streamflow,o,f,$sf" -a "coordinates,streamflow,m,c,time longitude latitude" $out_file_noref $out_file_noref
 
-# Add a reference_time dimension to time and streamflow so we can aggregate along reference_time later.
-ncap2 -h -O -s 'streamflow[$reference_time,$time,$feature_id]=streamflow; time[$reference_time,$time]=time' $out_file_ref $out_file_ref
-
-# Add back the scale_factor!!
-ncatted -h -O -a "scale_factor,streamflow,o,f,$sf" $out_file_ref $out_file_ref
-
+  # Add the lat_lon coordinates
+  ncks -h -A $lat_lon_file $out_file_noref
+fi
