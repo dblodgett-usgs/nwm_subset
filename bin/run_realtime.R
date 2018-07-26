@@ -12,6 +12,8 @@ log_file <- "logs/process_log"
 
 sink(log_file, append = TRUE)
 
+print(paste(Sys.time(), "Starting run:", configuration))
+
 ####################
 # Global Constants #
 ####################
@@ -34,32 +36,43 @@ config_lookup <-
 
 retry_dir <- "./data/retry"
 
-###################
-# Runner Function #
-###################
+# wget constants
+nomads_url <- "http://nomads.ncep.noaa.gov/pub/data/nccf/com/nwm/prod"
+wget_base <- "wget -r -np -nH --cut-dirs=8 -q -A"
+file_type <- "channel_rt"
 
-run_func <- function(configuration, day_folder, hour_string, retry_dir, config_lookup) {
-  
-  # wget constants
-  nomads_url <- "http://nomads.ncep.noaa.gov/pub/data/nccf/com/nwm/prod"
-  wget_base <- "wget -r -np -nH --cut-dirs=8 -q -A"
-  file_type <- "channel_rt"
-  
-  # lat/lon data for noref file type
-  lat_lon_file <- "../NWM_v1.2_nc_tools_v1/spatialMetadataFiles/nwm-v1.2-channel_spatial_index.nc"
-  
-  # data and processing paths
-  data_dir <- "./data/"
-  
-  proc_dir <- paste0("./data/proc", as.numeric(Sys.time()))
-  dir.create(proc_dir, showWarnings = FALSE, recursive = TRUE)
-  
+# lat/lon data for noref file type
+lat_lon_file <- "../NWM_v1.2_nc_tools_v1/spatialMetadataFiles/nwm-v1.2-channel_spatial_index.nc"
+
+# data and processing paths
+data_dir <- "./data/"
+dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
+
+proc_dir <- paste0("./data/proc", as.numeric(Sys.time()))
+dir.create(proc_dir, showWarnings = FALSE, recursive = TRUE)
+
+day_folder <- paste0("nwm.", format((Sys.time() - 3600), "%Y%m%d", tz = "UTC"))
+hour_string <- paste0("t", format((Sys.time() - 3600), "%H", tz = "UTC"), "z")
+
+get_dirs <- function(configuration) {
   out_dir <-  paste0(data_dir, config_lookup[[configuration]]$dir)
-  
   out_dir_noref <-paste0(out_dir, "/noref")
   dir.create(out_dir_noref, showWarnings = FALSE, recursive = TRUE)
   out_dir_ref <- paste0(out_dir, "/ref")
   dir.create(out_dir_ref, showWarnings = FALSE, recursive = TRUE)
+  return(list(out_dir_noref = out_dir_noref, out_dir_ref = out_dir_ref))
+}
+
+###################
+# Runner Function #
+###################
+
+run_func <- function(configuration, day_folder, hour_string) {
+  
+  dirs <- get_dirs(configuration)
+  
+  out_dir_noref <- dirs[["out_dir_noref"]]
+  out_dir_ref <- dirs[["out_dir_ref"]]
   
   out_file_noref <- sprintf("%s/%s.nc", out_dir_noref, "latest")
   out_file_noref_proc <- sprintf("%s/%s.nc", proc_dir, "latest")
@@ -105,24 +118,43 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir, config_l
         print(paste(Sys.time(), "Unexpected number of files downloaded. Got", length(list.files(proc_dir)),
                     "Expected", config_lookup[[configuration]]$exp_fis))
       }
-      print(paste(Sys.time(), "No Data Downloaded. Adding to retry."))
-      dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
+      # print(paste(Sys.time(), "No Data Downloaded. Adding to retry."))
       system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
     }
   }
+  
   unlink(proc_dir, recursive = TRUE)
   
-  # retry builder
-  dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
+}
+
+retry_delete <- function(configuration) {
+  out_dir_ref <- get_dirs(configuration)[["out_dir_ref"]] 
+  
   in_place <- list.files(out_dir_ref, full.names = TRUE)
-  expected_files <- config_lookup[[configuration]]$times
-  expected_file_paths <- sprintf("%s/%s_%s.nc", out_dir_ref, day_folder, expected_files)
+  
+  expected_hour_strings <- config_lookup[[configuration]]$times
+  expected_hours <- seq((Sys.time() - 24*3600), (Sys.time() - 3600), "hour")
+  
+  expected_file_paths <- sprintf("%s/%s_%s.nc", 
+                                 out_dir_ref, 
+                                 paste0("nwm.", format(expected_hours, "%Y%m%d", tz = "UTC")), 
+                                 paste0("t", format(expected_hours, "%H", tz = "UTC"), "z"))
+  
+  expected_file_paths <- expected_file_paths[sapply(expected_hour_strings, 
+                                                    function(x) which(grepl(x, expected_file_paths)))]
+  
   too_old <- in_place[which(difftime(Sys.time(), file.info(in_place)$mtime, units = "hours") > 24)]
-  missing <- c(expected_files[which(!expected_file_paths %in% in_place)],
-               regmatches(too_old, regexpr("t[0-9][0-9]z", too_old)))
+  
+  missing <- c(regmatches(expected_file_paths, 
+                          regexpr("nwm.[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_t[0-9][0-9]z", 
+                                  expected_file_paths))[which(!expected_file_paths %in% in_place)],
+               regmatches(too_old, 
+                          regexpr("t[0-9][0-9]z", 
+                                  too_old)))
   
   for(missed in missing) {
-    m <- paste0(configuration, "__", day_folder, "__", missed)
+    m <- strsplit(missed, "_")[[1]]
+    m <- paste0(configuration, "__", m[1], "__", m[2])
     if(!m %in% list.files(retry_dir)) {
       print(paste(Sys.time(), "missing", configuration, day_folder, missed))
       system(paste0("touch ", retry_dir,"/", m))
@@ -132,10 +164,9 @@ run_func <- function(configuration, day_folder, hour_string, retry_dir, config_l
   for(to in too_old) {
     unlink(too_old)
   }
-  
 }
 
-retry_fun <- function(retry_dir, config_lookup) {
+retry_fun <- function() {
   for(retry_run in list.files(retry_dir)) {
     
     unlink(file.path(retry_dir, retry_run))
@@ -147,32 +178,33 @@ retry_fun <- function(retry_dir, config_lookup) {
       
       print(paste(Sys.time(), "Retrying:", paste(retry_run, collapse = " ")))
       
-      run_func(retry_run[1], retry_run[2], retry_run[3], retry_dir, config_lookup)
+      run_func(retry_run[1], retry_run[2], retry_run[3])
     } else {
       print(paste(Sys.time(), "Retry", paste(retry_run, collapse = " "), "too old. Deleting."))
     }
   }
 }
 
-day_folder <- paste0("nwm.", format((Sys.time() - 3600), "%Y%m%d", tz = "UTC"))
-hour_string <- paste0("t", format((Sys.time() - 3600), "%H", tz = "UTC"), "z")
-
-retry_fun(retry_dir, config_lookup)
+retry_fun()
 
 configurations <- strsplit(configuration, ",")[[1]]
 
 for(configuration in configurations) {
+
+  dirs <- get_dirs(configuration)
+  
+  retry_delete(configuration)
   
   if(hour_string %in% config_lookup[[configuration]]$times) {
     
     print(paste(Sys.time(), "Running:",configuration, day_folder, hour_string))  
     
-    run_func(configuration, day_folder, hour_string, retry_dir, config_lookup)
+    run_func(configuration, day_folder, hour_string)
     
   }
   
 }
 
-retry_fun(retry_dir, config_lookup)
+retry_fun()
 
 sink()
