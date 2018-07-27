@@ -49,6 +49,12 @@ data_dir <- "./data/"
 dir.create(retry_dir, showWarnings = FALSE, recursive = TRUE)
 
 proc_dir <- paste0("./data/proc", as.numeric(Sys.time()))
+
+if(any(grepl("proc", list.dirs(data_dir)))) {
+  print(paste(Sys.time(), "proc directory exists, exiting."))
+  quit()
+}
+
 dir.create(proc_dir, showWarnings = FALSE, recursive = TRUE)
 
 day_folder <- paste0("nwm.", format((Sys.time() - 3600), "%Y%m%d", tz = "UTC"))
