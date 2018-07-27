@@ -27,7 +27,7 @@ cat(paste(time[which(diff(as.numeric(time))>3600)], time[which(diff(as.numeric(t
 
 ```
 ```{r sites}
-sites <- sf::st_read("nexus_locations/linked_sites.gpkg")
+sites <- sf::st_read("../nexus_locations/linked_sites.gpkg")
 
 site <- "07374000"
 COMID <- dplyr::filter(sites, site_id == site)$COMID
