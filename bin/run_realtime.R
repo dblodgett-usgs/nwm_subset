@@ -104,7 +104,7 @@ run_func <- function(configuration, day_folder, hour_string) {
       
       tryCatch({
         # main nco conversion call
-        system(sprintf("../bin/fmrc_real_time_both.sh %s %s %s %s",
+        system(sprintf("../bin/fmrc_real_time.sh %s %s %s %s",
                        proc_dir,
                        out_file_noref_proc,
                        out_file_ref_proc,
