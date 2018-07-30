@@ -2,7 +2,7 @@
 
 # in_file <- "/Volumes/tmpfs/199301_STREAMFLOW_DOMAIN1.nc"
 # out_file <- "/Volumes/tmpfs/199301_STREAMFLOW_DOMAIN1.nc"
-# comids <- readRDS("nexus_locations/nwis_comids.rds")
+# comids <- readRDS("R/nexus_locations/nwis_comids.rds")
 
 args = commandArgs(trailingOnly=TRUE)
 

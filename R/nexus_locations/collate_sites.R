@@ -25,7 +25,7 @@ ahps <- readr::read_csv(file.path(data_dir, ahps_dir, "station.csv"))
 # real_time_nwis <- cbind(real_time_nwis, sf::st_coordinates(real_time_nwis))
 
 # This file was accessed 6-8-2018
-real_time_nwis <- readRDS("nexus_locations/real_time_nwis_06082018.rds")
+real_time_nwis <- readRDS("R/nexus_locations/real_time_nwis_06082018.rds")
 
 NHDPlus_GageLoc <- sf::st_read(file.path(data_dir, NHDPlus_GageLoc_dir, "GageLoc.shp"),
                                stringsAsFactors = FALSE)
@@ -152,17 +152,17 @@ sites <- filter(sites, !is.na(COMID)) %>%
 
 sites <- sf::st_as_sf(sites, coords = c("lon", "lat"), crs = 4326)
 
-# unlink("nexus_locations/linked_sites.gpkg")
-# sf::st_write(sites, "nexus_locations/linked_sites.gpkg")
+# unlink("R/nexus_locations/linked_sites.gpkg")
+# sf::st_write(sites, "R/nexus_locations/linked_sites.gpkg")
 
 nwm_comids <- ncdf4::nc_open(nwm_v1dot2_nc)$dim$feature_id$vals
-v1_comids <- readRDS("nexus_locations/nwm_v1_comids.rds")
+v1_comids <- readRDS("R/nexus_locations/nwm_v1_comids.rds")
 nwm_comids <- as.integer(nwm_comids[nwm_comids %in% v1_comids])
-all_comids <- unique(as.integer(c(readRDS("nexus_locations/confluence_comids.rds")$COMID, sites$COMID)))
+all_comids <- unique(as.integer(c(readRDS("R/nexus_locations/confluence_comids.rds")$COMID, sites$COMID)))
 all_comids <- unique(all_comids[all_comids %in% nwm_comids])
 
-# saveRDS(all_comids, "nexus_locations/v1andv2_comids.rds")
+# saveRDS(all_comids, "R/nexus_locations/v1andv2_comids.rds")
 
-confluence_comids <- unique(readRDS("nexus_locations/confluence_comids.rds"))
-# unlink("nexus_locations/confluences.gpkg")
-# sf::st_write(confluence_comids, "nexus_locations/confluences.gpkg")
+confluence_comids <- unique(readRDS("R/nexus_locations/confluence_comids.rds"))
+# unlink("R/nexus_locations/confluences.gpkg")
+# sf::st_write(confluence_comids, "R/nexus_locations/confluences.gpkg")

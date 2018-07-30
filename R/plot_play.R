@@ -94,7 +94,7 @@ build_ts_pngs <- function(COMID, site, out_dir) {
   }
 }
 
-sites <- sf::st_read("nexus_locations/linked_sites.gpkg")
+sites <- sf::st_read("R/nexus_locations/linked_sites.gpkg")
 # "02423496", "04074950", "07374000", "05406457", "01646500",
 # "06800500", "06881000", "06835500", "06853500"
 site_list <- c("06462000", "06794500", "0679600")

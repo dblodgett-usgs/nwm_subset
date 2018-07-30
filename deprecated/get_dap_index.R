@@ -1,4 +1,4 @@
-sites <- sf::st_read("nexus_locations/linked_sites.gpkg")
+sites <- sf::st_read("R/nexus_locations/linked_sites.gpkg")
 
 site <- c("05490500", "01208990")
 ids <- nc$dim$feature_id$vals

@@ -2,7 +2,7 @@ library(dplyr)
 library(sf)
 library(nhdplusTools)
 
-setwd("~/Documents/Projects/NWM/2_code/nwm_output/nexus_locations")
+setwd("~/Documents/Projects/NWM/2_code/nwm_output/R/nexus_locations")
 flowlines <- readRDS("../../nhdplus_refactor/nhdplus_flowlines.rds")
 
 nhdplus_path <- "../../../1_data/NHDPlusV21_National_Seamless.gdb/"
