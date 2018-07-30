@@ -4,6 +4,10 @@
 # out_file <- "/Volumes/tmpfs/199301_STREAMFLOW_DOMAIN1.nc"
 # comids <- readRDS("R/nexus_locations/nwis_comids.rds")
 
+###################################################################
+# Tested with NWM v1.2 operational outputs and v1.2 retrospective.#
+###################################################################
+
 args = commandArgs(trailingOnly=TRUE)
 
 if (length(args)<3) {
