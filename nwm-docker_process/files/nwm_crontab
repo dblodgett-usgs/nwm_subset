@@ -1,1 +1,1 @@
-5 * * * * root cd /nwm/content/; Rscript /nwm/bin/run_realtime.R aa,sr,mr,lr1,lr2,lr3,lr4
+5 * * * * root cd /nwm/content/; Rscript /nwm/bin/run_realtime.R aa,sr,mr1,mr2,mr3,mr4,mr5,mr6,mr7,lr1,lr2,lr3,lr4

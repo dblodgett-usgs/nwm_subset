@@ -18,6 +18,8 @@ comid_list=$5
 latlon_path=$6
 file_list=""
 filter_list=""
+keep_var=streamflow
+other_vars="nudge,velocity,q_lateral,qBtmVertRunoff,qBucket,qSfcLatRunoff"
 if [ -f $out_file ]; then
 	exit 0
 fi
@@ -46,7 +48,7 @@ for r in $times; do
   mkdir $tt
   Rscript --vanilla ${cull_nwm_path}dl_ostore.R $date $config channel_rt $r $tt
   for f in ${tt}/*; do
-    ncks -h --exclude -v nudge,velocity,q_lateral,qBtmVertRunoff,qBucket,qSfcLatRunoff -O $f $f
+    ncks -h --exclude -v $other_vars -O $f $f
     Rscript --vanilla ${cull_nwm_path}cull_catchments.R $f $f ${comid_list}
 		# ncks  -h -O --cnk_plc g3d --cnk_dmn feature_id,1 $f $f
   done
@@ -55,10 +57,10 @@ for r in $times; do
   rm -r ${tt}
   ncks -h -O --fix_rec_dmn time $ff $ff
   ncks -h -O --mk_rec_dmn reference_time $ff $ff
-  sf=$(ncattget scale_factor streamflow $ff)
+  sf=$(ncattget scale_factor $keep_var $ff)
   ncap2 -h -O -s 'time[$reference_time,$time]=time' $ff $ff
-  ncap2 -h -O -s 'streamflow[$reference_time,$time,$feature_id]=streamflow' $ff $ff
-  ncatted -h -O -a "scale_factor,streamflow,o,f,$sf" $ff $ff
+  ncap2 -h -O -s '$keep_var[$reference_time,$time,$feature_id]=$keep_var' $ff $ff
+  ncatted -h -O -a "scale_factor,$keep_var,o,f,$sf" $ff $ff
   file_list="$file_list $ff"
   folder_list="$folder_list $temp_dir_use"
 done
@@ -67,6 +69,6 @@ rm $file_list
 rm -rf $folder_list
 ncks -h -A -v latitude,longitude ${latlon_path}culled_latlon.nc ${temp_dir}/$out_file
 # ncks -h -O --deflate=1 ${temp_dir}/$out_file ${temp_dir}/$out_file
-ncatted -h -O -a "title,global,a,c,NWM Forcast Model Run Collection" -a "axis,time,a,c,T" -a "coordinates,streamflow,m,c,longitude latitude time reference_time" ${temp_dir}/$out_file ${temp_dir}/$out_file
+ncatted -h -O -a "title,global,a,c,NWM Forcast Model Run Collection" -a "axis,time,a,c,T" -a "coordinates,$keep_var,m,c,longitude latitude time reference_time" ${temp_dir}/$out_file ${temp_dir}/$out_file
 ncatted -h -O -a "model_initialization_time,global,d,," -a "model_output_valid_time,global,d,," -a "stream_order_output,global,d,," -a "model_version,global,d,," -a "dev_OVRTSWCRT,global,d,," -a "dev_NOAH_TIMESTEP,global,d,," -a "dev_channel_only,global,d,," -a "dev_channelBucket_only,global,d,," -a "dev,global,d,," -a "cdm_datatype,global,d,," -a "station_dimension,global,d,," -a "Conventions,global,m,c,CF-1.7" -a "valid_range,,d,," ${temp_dir}/$out_file $out_file
 rm ${temp_dir}/$out_file

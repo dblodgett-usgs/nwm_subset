@@ -3,7 +3,7 @@
 args = commandArgs(trailingOnly=TRUE)
 
 if (length(args)<1) {
-  stop("one or more comma seperated configuration names only \n mr,sr,aa,lr1,lr2,lr3,lr4", call.=FALSE)
+  stop("one or more comma seperated configuration names only \n mr1,mr2,mr3,mr4,mr5,mr6,mr7,sr,aa,lr1,lr2,lr3,lr4", call.=FALSE)
 } else if (length(args)==1) {
   configuration <- args[[1]]
 }
@@ -28,7 +28,13 @@ t2 <- c("t00z", "t01z", "t02z", "t03z", "t04z",
 config_lookup <- 
   list(aa = list(dir = "analysis_assim", fi = "analysis_assim", exp_fis = 3, times = t2),
        sr = list(dir = "short_range", fi = "short_range", exp_fis = 18, times = t2),
-       mr = list(dir = "medium_range", fi = "medium_range", exp_fis = 80, times = t1),
+       mr1 = list(dir = "medium_range_mem1", fi = "medium_range", exp_fis = 80, times = t1),
+       mr2 = list(dir = "medium_range_mem2", fi = "medium_range", exp_fis = 80, times = t1),
+       mr3 = list(dir = "medium_range_mem3", fi = "medium_range", exp_fis = 80, times = t1),
+       mr4 = list(dir = "medium_range_mem4", fi = "medium_range", exp_fis = 80, times = t1),
+       mr5 = list(dir = "medium_range_mem5", fi = "medium_range", exp_fis = 80, times = t1),
+       mr6 = list(dir = "medium_range_mem6", fi = "medium_range", exp_fis = 80, times = t1),
+       mr7 = list(dir = "medium_range_mem7", fi = "medium_range", exp_fis = 80, times = t1),
        lr1 = list(dir = "long_range_mem1", fi = "long_range", exp_fis = 120, times = t1),
        lr2 = list(dir = "long_range_mem2", fi = "long_range", exp_fis = 120, times = t1),
        lr3 = list(dir = "long_range_mem3", fi = "long_range", exp_fis = 120, times = t1),

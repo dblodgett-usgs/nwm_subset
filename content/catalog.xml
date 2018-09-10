@@ -31,9 +31,9 @@
       <remove type="attribute" name="dev"/>
     </netcdf>
   </dataset>
-  <dataset name="Medium Range Latest Run" ID="medium_range_latest" urlPath="medium_range_latest">
+  <dataset name="Medium Range Member 1  Latest Run" ID="medium_range_mem1_latest" urlPath="medium_range_mem1_latest">
     <serviceName>all</serviceName>
-    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/medium_range/noref/latest.nc">
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/medium_range_mem1/noref/latest.nc">
       <remove type="attribute" name="proj4"/>
       <remove type="attribute" name="esri_pe_string"/>
       <remove type="attribute" name="stream_order_output"/>
@@ -128,11 +128,11 @@
       <remove type="attribute" name="dev"/>
     </netcdf>
   </dataset>
-  <dataset name="Medium Range Latest Day" ID="medium_range" urlPath="medium_range">
+  <dataset name="Medium Range Member 1 Latest Day" ID="medium_range_mem1" urlPath="medium_range_mem1">
     <serviceName>odap</serviceName>
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false">
       <aggregation type="joinExisting" dimName="reference_time">
-        <scan location="/data/medium_range/ref/" suffix=".nc" subdirs="false"/>
+        <scan location="/data/medium_range_mem1/ref/" suffix=".nc" subdirs="false"/>
       </aggregation>
       <remove type="attribute" name="proj4"/>
       <remove type="attribute" name="esri_pe_string"/>
