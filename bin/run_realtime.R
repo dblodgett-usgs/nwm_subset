@@ -3,7 +3,7 @@
 args = commandArgs(trailingOnly=TRUE)
 
 if (length(args)<1) {
-  stop("one or more comma seperated configuration names only \n mr1,mr2,mr3,mr4,mr5,mr6,mr7,sr,aa,lr1,lr2,lr3,lr4", call.=FALSE)
+  stop("one or more comma seperated configuration names only \n mf,mr1,mr2,mr3,mr4,mr5,mr6,mr7,sr,aa,lr1,lr2,lr3,lr4", call.=FALSE)
 } else if (length(args)==1) {
   configuration <- args[[1]]
 }
@@ -26,26 +26,26 @@ t2 <- c("t00z", "t01z", "t02z", "t03z", "t04z",
         "t20z", "t21z", "t22z", "t23z")
 
 config_lookup <- 
-  list(aa = list(dir = "analysis_assim", fi = "analysis_assim", exp_fis = 3, times = t2),
-       sr = list(dir = "short_range", fi = "short_range", exp_fis = 18, times = t2),
-       mr1 = list(dir = "medium_range_mem1", fi = "medium_range", exp_fis = 80, times = t1),
-       mr2 = list(dir = "medium_range_mem2", fi = "medium_range", exp_fis = 80, times = t1),
-       mr3 = list(dir = "medium_range_mem3", fi = "medium_range", exp_fis = 80, times = t1),
-       mr4 = list(dir = "medium_range_mem4", fi = "medium_range", exp_fis = 80, times = t1),
-       mr5 = list(dir = "medium_range_mem5", fi = "medium_range", exp_fis = 80, times = t1),
-       mr6 = list(dir = "medium_range_mem6", fi = "medium_range", exp_fis = 80, times = t1),
-       mr7 = list(dir = "medium_range_mem7", fi = "medium_range", exp_fis = 80, times = t1),
-       lr1 = list(dir = "long_range_mem1", fi = "long_range", exp_fis = 120, times = t1),
-       lr2 = list(dir = "long_range_mem2", fi = "long_range", exp_fis = 120, times = t1),
-       lr3 = list(dir = "long_range_mem3", fi = "long_range", exp_fis = 120, times = t1),
-       lr4 = list(dir = "long_range_mem4", fi = "long_range", exp_fis = 120, times = t1))
+  list(aa = list(dir = "analysis_assim", fi = "analysis_assim.channel_rt", exp_fis = 3, times = t2),
+       sr = list(dir = "short_range", fi = "short_range.channel_rt", exp_fis = 18, times = t2),
+       mf = list(dir = "forcing_medium_range", fi = "medium_range.forcing", exp_fis = 240, times = t1),
+       mr1 = list(dir = "medium_range_mem1", fi = "medium_range.channel_rt", exp_fis = 80, times = t1),
+       mr2 = list(dir = "medium_range_mem2", fi = "medium_range.channel_rt", exp_fis = 80, times = t1),
+       mr3 = list(dir = "medium_range_mem3", fi = "medium_range.channel_rt", exp_fis = 80, times = t1),
+       mr4 = list(dir = "medium_range_mem4", fi = "medium_range.channel_rt", exp_fis = 80, times = t1),
+       mr5 = list(dir = "medium_range_mem5", fi = "medium_range.channel_rt", exp_fis = 80, times = t1),
+       mr6 = list(dir = "medium_range_mem6", fi = "medium_range.channel_rt", exp_fis = 80, times = t1),
+       mr7 = list(dir = "medium_range_mem7", fi = "medium_range.channel_rt", exp_fis = 80, times = t1),
+       lr1 = list(dir = "long_range_mem1", fi = "long_range.channel_rt", exp_fis = 120, times = t1),
+       lr2 = list(dir = "long_range_mem2", fi = "long_range.channel_rt", exp_fis = 120, times = t1),
+       lr3 = list(dir = "long_range_mem3", fi = "long_range.channel_rt", exp_fis = 120, times = t1),
+       lr4 = list(dir = "long_range_mem4", fi = "long_range.channel_rt", exp_fis = 120, times = t1))
 
 retry_dir <- "./data/retry"
 
 # wget constants
-nomads_url <- "http://nomads.ncep.noaa.gov/pub/data/nccf/com/nwm/prod"
-wget_base <- "wget -r -np -nH --cut-dirs=8 -q -A"
-file_type <- "channel_rt"
+nomads_url <- "http://para.nomads.ncep.noaa.gov/pub/data/nccf/com/nwm/para/"
+wget_base <- "wget -r -np -nH --cut-dirs=9 -q -A"
 
 # lat/lon data for noref file type
 lat_lon_file <- "../NWM_v1.2_nc_tools_v1/spatialMetadataFiles/nwm-v1.2-channel_spatial_index.nc"
@@ -91,14 +91,18 @@ run_func <- function(configuration, day_folder, hour_string) {
   out_file_ref <- sprintf("%s/%s_%s.nc", out_dir_ref, day_folder, hour_string)
   out_file_ref_proc <- sprintf("%s/%s_%s.nc", proc_dir, day_folder, hour_string)
   
+  if(configuration == "mf") { #mf only
+    # nwm.t00z.medium_range.forcing.f001.conus.nc
+    out_file_ref <- sprintf("%s/%s_nwm.%s.medium_range.forcing.f001.conus.nc", out_dir_ref, day_folder, hour_string)
+  }
+  
   if(!file.exists(out_file_ref)) {
     # main wget call
     try({
-      system(sprintf('%s "*%s.%s.%s*" -P %s %s/%s/%s/',
+      system(sprintf('%s "*%s.%s*" -P %s %s/%s/%s/',
                      wget_base,
                      hour_string,
                      config_lookup[[configuration]]$fi,
-                     file_type,
                      proc_dir,
                      nomads_url,
                      day_folder,
@@ -107,24 +111,30 @@ run_func <- function(configuration, day_folder, hour_string) {
     
     # if download worked
     if(length(list.files(proc_dir)) == config_lookup[[configuration]]$exp_fis) {
-      
-      tryCatch({
-        # main nco conversion call
-        system(sprintf("../bin/fmrc_real_time.sh %s %s %s %s",
-                       proc_dir,
-                       out_file_noref_proc,
-                       out_file_ref_proc,
-                       lat_lon_file))
-        
-        # move files when done
-        file.rename(out_file_noref_proc, out_file_noref)
-        file.rename(out_file_ref_proc, out_file_ref)
-        
-      }, error = function(e) {
-        print(paste(Sys.time(), "Error in processing was", e, "\n Adding to retry."))
-        system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
-      })
-      
+      if(grepl("channel_rt", config_lookup[[configuration]]$fi)) {
+        tryCatch({
+          # main nco conversion call
+          system(sprintf("../bin/fmrc_real_time.sh %s %s %s %s",
+                         proc_dir,
+                         out_file_noref_proc,
+                         out_file_ref_proc,
+                         lat_lon_file))
+          
+          # move files when done
+          file.rename(out_file_noref_proc, out_file_noref)
+          file.rename(out_file_ref_proc, out_file_ref)
+          
+        }, error = function(e) {
+          print(paste(Sys.time(), "Error in processing was", e, "\n Adding to retry."))
+          system(sprintf("touch %s/%s__%s__%s", retry_dir, configuration, day_folder, hour_string))
+        })
+      } else { # mf only
+        files <- list.files(file.path(proc_dir, config_lookup[[configuration]]$dir))
+        for(file in files) {
+          file.rename(file.path(proc_dir, config_lookup[[configuration]]$dir, file), 
+                      file.path(out_dir_ref, paste0(day_folder, "_", file)))
+        }
+      }
     } else {
       if(length(list.files(proc_dir)) > 0) {
         print(paste(Sys.time(), "Unexpected number of files downloaded. Got", length(list.files(proc_dir)),
