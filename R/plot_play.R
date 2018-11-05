@@ -94,10 +94,8 @@ build_ts_pngs <- function(COMID, site, out_dir) {
   }
 }
 
-sites <- sf::st_read("R/nexus_locations/linked_sites.gpkg")
-# "02423496", "04074950", "07374000", "05406457", "01646500",
-# "06800500", "06881000", "06835500", "06853500"
-site_list <- c("06462000", "06794500", "0679600")
+sites <- sf::st_read("~/Documents/Projects/NWM/2_code/nwm_output/R/nexus_locations/linked_sites.gpkg")
+site_list <- c("06462000", "06794500", "0679600", "02423496", "04074950", "07374000", "05406457", "01646500","06800500", "06881000", "06835500", "06853500")
 
 for(site in site_list) {
   COMID <- dplyr::filter(sites, site_id == site)$COMID

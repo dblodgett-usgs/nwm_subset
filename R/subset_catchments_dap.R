@@ -1,8 +1,8 @@
 # in_file <- "http://localhost/thredds/dodsC/nwm_retro_full"
 # out_file <- "demo_nwm_retro.nc"
 # 
-# in_file <- "http://localhost/thredds/dodsC/medium_range"
-# out_file <- "demo_medium_range.nc"
+in_file <- "http://localhost/thredds/dodsC/medium_range"
+out_file <- "subset_medium_range.nc"
 # 
 # comid_list <- c(7700148, 6781041, 8520575)
 
