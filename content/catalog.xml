@@ -5,10 +5,10 @@
     <service name="opendap" serviceType="OPENDAP" base="/thredds/dodsC/"/>
     <service name="ncssPoint" serviceType="NetcdfSubset Point" base="/thredds/ncss/point/"/>
   </service>
-  <dataset name="Retrospective Full Model" ID="nwm_retro_full" urlPath="nwm_retro_full">
+  <!-- <dataset name="Retrospective Full Model" ID="nwm_retro_full" urlPath="nwm_retro_full">
     <serviceName>all</serviceName>
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/full/nwm_retro_full.ncml"/>
-  </dataset>
+  </dataset> -->
   <dataset name="Analysis and Assimilation Latest Run" ID="analysis_assim_latest" urlPath="analysis_assim_latest">
     <serviceName>all</serviceName>
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/analysis_assim/noref/latest.nc">
