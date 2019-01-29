@@ -5,10 +5,7 @@
     <service name="opendap" serviceType="OPENDAP" base="/thredds/dodsC/"/>
     <service name="ncssPoint" serviceType="NetcdfSubset Point" base="/thredds/ncss/point/"/>
   </service>
-  <!-- <dataset name="Retrospective Full Model" ID="nwm_retro_full" urlPath="nwm_retro_full">
-    <serviceName>all</serviceName>
-    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/full/nwm_retro_full.ncml"/>
-  </dataset> -->
+  <dataset name="Real Time Latest and Forecast Model Run Collections">
   <dataset name="Analysis and Assimilation Latest Run" ID="analysis_assim_latest" urlPath="analysis_assim_latest">
     <serviceName>all</serviceName>
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="false" location="/data/analysis_assim/noref/latest.nc">
@@ -211,5 +208,44 @@
       <remove type="attribute" name="dev_channelBucket_only"/>
       <remove type="attribute" name="dev"/>
     </netcdf>
+  </dataset>  
+</dataset>
+  <dataset name="Retrospective Full Model" ID="nwm_retro_full" urlPath="nwm_retro_full">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/full/nwm_retro_full.ncml"/>
+  </dataset>
+  <dataset name="NWIS Flow and Some Water Quality Sites Subset">
+    <dataset name="Retrospective" ID="nwm_retro" urlPath="nwis_nwm_retro">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/nwis/nwm_retro.ncml"/>
+    </dataset>
+    <dataset name="Analysis and Assimilation Operational Archive" ID="analysis_assim" urlPath="nwis_analysis_assim">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/nwis/analysis_assim.ncml"/>
+    </dataset>
+    <dataset name="Short Range Operational Archive" ID="short_range" urlPath="nwis_short_range">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/nwis/short_range.ncml"/>
+    </dataset>
+    <dataset name="Medium Range Operational Archive" ID="medium_range" urlPath="nwis_medium_range">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/nwis/medium_range.ncml"/>
+    </dataset>
+    <dataset name="Long Range Member 1 Operational Archive" ID="long_range_mem1" urlPath="nwis_long_range_mem1">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/nwis/long_range_mem1.ncml"/>
+    </dataset>
+    <dataset name="Long Range Member 2 Operational Archive" ID="long_range_mem2" urlPath="nwis_long_range_mem2">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/nwis/long_range_mem2.ncml"/>
+    </dataset>
+    <dataset name="Long Range Member 3 Operational Archive" ID="long_range_mem3" urlPath="nwis_long_range_mem3">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/nwis/long_range_mem3.ncml"/>
+    </dataset>
+    <dataset name="Long Range Member 4 Operational Archive" ID="long_range_mem4" urlPath="nwis_long_range_mem4">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/nwis/long_range_mem4.ncml"/>
+    </dataset>
   </dataset>
 </catalog>
