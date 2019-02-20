@@ -11,15 +11,15 @@
       "licenses": [
         {
           "name": "Public Domain, CC0-1.0",
-          "URL": "https://code.usgs.gov/dblodgett/nwm_subset/blob/master/LICENSE"
+          "URL": "https://code.usgs.gov/water/nwm_subset/blob/master/LICENSE"
         }
       ]
     },
 
-    "homepageURL": "https://code.usgs.gov/dblodgett/nwm_subset/",
-    "downloadURL": "https://code.usgs.gov/dblodgett/nwm_subset/-/archive/master/nwm_subset-master.zip",
-    "disclaimerURL": "https://code.usgs.gov/dblodgett/nwm_subset/blob/master/DISCLAIMER.md",
-    "repositoryURL": "https://code.usgs.gov/dblodgett/nwm_subset.git",
+    "homepageURL": "https://code.usgs.gov/water/nwm_subset/",
+    "downloadURL": "https://code.usgs.gov/water/nwm_subset/-/archive/master/nwm_subset-master.zip",
+    "disclaimerURL": "https://code.usgs.gov/water/nwm_subset/blob/master/DISCLAIMER.md",
+    "repositoryURL": "https://code.usgs.gov/water/nwm_subset.git",
     "vcs": "git",
 
     "laborHours": 500,
