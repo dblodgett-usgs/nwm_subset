@@ -1,3 +1,4 @@
+R/out/
 .DS_Store
 *.tsv
 *.gpkg
