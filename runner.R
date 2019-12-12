@@ -8,6 +8,8 @@ if (length(args) < 1) {
   threads <- args[[1]]
 }
 
+threads <- 1
+
 packages <- c("xml2", "httr", "parallel", "snow", "pbapply", "ncdf4", "drake")
 miss <- packages[!packages %in% installed.packages()[, 1]]
 if(length(miss) > 0) install.packages(miss)
@@ -21,10 +23,17 @@ library(ncdf4)
 library(drake)
 
 source("R/get_data.R")
+source("R/add_time.R")
 
 bucket <- "http://noaa-nwm-retro-v2.0-pds.s3.amazonaws.com/"
 
-temp_dir <- "data/temp"
+temp_dir <- "content/data/temp"
+
+in_path <- "content/data/full_v2/full_physics/"
+
+out_path <- "content/data/full_v2/with_time/"
+
+out_script <- "nwm_v2/add_time.sh"
 
 if(!dir.exists(temp_dir)) {
   dir.create(temp_dir, showWarnings = FALSE, recursive = TRUE)
@@ -33,7 +42,8 @@ if(!dir.exists(temp_dir)) {
 print(paste("working in", temp_dir))
 
 plan <- drake_plan(keys = get_keys(bucket, ".*CHRTOUT.*"),
-                   fs = get_nc_file(bucket, keys, threads, temp_dir))
+                   fs = get_nc_file(bucket, keys, threads, temp_dir, "content/data/full_v2/", 1993),
+                   wt = add_time(keys, in_path, out_path, out_script))
 
 cache <- new_cache("./.drake")
 make(plan, cache = cache)

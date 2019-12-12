@@ -214,6 +214,10 @@
     <serviceName>all</serviceName>
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/full/nwm_retro_full.ncml"/>
   </dataset>
+  <dataset name="Retrospective V2 Full Model" ID="nwmv2_retro_full" urlPath="nwmv2_retro_full">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/data/full_v2/nwmv2_retro_full.ncml"/>
+  </dataset>
   <dataset name="NWIS Flow and Some Water Quality Sites Subset">
     <dataset name="Retrospective" ID="nwm_retro" urlPath="nwis_nwm_retro">
       <serviceName>all</serviceName>

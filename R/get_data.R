@@ -13,7 +13,7 @@ get_keys <- function(u, regex = NULL, after = NULL) {
   if(length(k) > 0) c(k, get_keys(u, regex, k[length(k)]))
 }
 
-get_nc_file <- function(bucket, keys, cores, temp_dir, year = NULL) {
+get_nc_file <- function(bucket, keys, cores, temp_dir, data_path = "data", year = NULL) {
   
   if(!is.null(year)) keys <- keys[grepl(year, keys)]
   
@@ -26,7 +26,7 @@ get_nc_file <- function(bucket, keys, cores, temp_dir, year = NULL) {
   
   fs <- pbapply::pblapply(keys, function(key, bucket, temp_dir) {
     
-    outfile <- file.path("data", key)
+    outfile <- file.path(data_path, key)
     
     temp_file <- file.path(temp_dir, key)
     
@@ -52,7 +52,7 @@ get_nc_file <- function(bucket, keys, cores, temp_dir, year = NULL) {
     outfile
   }, cl = cl, bucket = bucket, temp_dir = temp_dir)
   
-  if(!is.na(cl))
+  if(!is.null(cl))
     parallel::stopCluster(cl)
   
   return(fs)
