@@ -11,7 +11,7 @@ add_time <- function(keys, in_path, out_path, out_script) {
     
     cat("#!/bin/bash/\n", file = os, sep = "/n")
     
-    f <- fs[grepl(year, fs)]
+    f <- fs[grepl(paste0("^", year), fs)]
     d <- ds[grepl(year, ds)]
     
     lapply(1:length(f), function(x, f, d, out_path, os) {

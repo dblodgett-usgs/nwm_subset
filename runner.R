@@ -24,6 +24,7 @@ library(drake)
 
 source("R/get_data.R")
 source("R/add_time.R")
+source("R/concat.R")
 
 bucket <- "http://noaa-nwm-retro-v2.0-pds.s3.amazonaws.com/"
 
@@ -33,7 +34,10 @@ in_path <- "content/data/full_v2/full_physics/"
 
 out_path <- "content/data/full_v2/with_time/"
 
+concat_path <- "content/data/full_v2/"
+
 out_script <- "nwm_v2/add_time.sh"
+concat_script <- "nwm_v2/concat_time.sh"
 
 if(!dir.exists(temp_dir)) {
   dir.create(temp_dir, showWarnings = FALSE, recursive = TRUE)
@@ -42,8 +46,9 @@ if(!dir.exists(temp_dir)) {
 print(paste("working in", temp_dir))
 
 plan <- drake_plan(keys = get_keys(bucket, ".*CHRTOUT.*"),
-                   fs = get_nc_file(bucket, keys, threads, temp_dir, "content/data/full_v2/", 1993),
-                   wt = add_time(keys, in_path, out_path, out_script))
+                   # fs = get_nc_file(bucket, keys, threads, temp_dir, "content/data/full_v2/", 1993),
+                   wt = add_time(keys, in_path, out_path, out_script),
+                   ct = concat(keys, out_path, concat_path, concat_script))
 
 cache <- new_cache("./.drake")
 make(plan, cache = cache)
