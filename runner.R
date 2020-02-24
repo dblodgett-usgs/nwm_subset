@@ -25,6 +25,7 @@ library(drake)
 source("R/get_data.R")
 source("R/add_time.R")
 source("R/concat.R")
+source("R/reshape_thredds.R")
 
 bucket <- "http://noaa-nwm-retro-v2.0-pds.s3.amazonaws.com/"
 
@@ -38,6 +39,7 @@ concat_path <- "content/data/full_v2/"
 
 out_script <- "nwm_v2/add_time.sh"
 concat_script <- "nwm_v2/concat_time.sh"
+reshape_script <- "nwm_v2/dap_commands.sh"
 
 if(!dir.exists(temp_dir)) {
   dir.create(temp_dir, showWarnings = FALSE, recursive = TRUE)
@@ -45,10 +47,15 @@ if(!dir.exists(temp_dir)) {
 
 print(paste("working in", temp_dir))
 
+reruns <- c(paste0("2012", c("02", "03", "04", "05", 
+                             "06", "07", "08", "09", 
+                             "10", "11", "12")))
+
 plan <- drake_plan(keys = get_keys(bucket, ".*CHRTOUT.*"),
                    # fs = get_nc_file(bucket, keys, threads, temp_dir, "content/data/full_v2/", 1993),
-                   wt = add_time(keys, in_path, out_path, out_script),
-                   ct = concat(keys, out_path, concat_path, concat_script))
+                   wt = add_time(keys, in_path, out_path, out_script, reruns),
+                   ct = concat(keys, out_path, concat_path, concat_script, reruns),
+                   rs = reshape_thredds(reshape_script))
 
 cache <- new_cache("./.drake")
 make(plan, cache = cache)

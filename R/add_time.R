@@ -1,7 +1,11 @@
 
-add_time <- function(keys, in_path, out_path, out_script) {
+add_time <- function(keys, in_path, out_path, out_script, reruns) {
 
   keys <- keys[grepl("full_physics", keys)]
+  
+  if(length(reruns) > 0) {
+    keys <- keys[grepl(paste(paste0('.*[0-9][0-9][0-9][0-9]/', reruns), collapse = "|"), keys)]
+  }
   
   fs <- basename(keys)
   ds <- dirname(keys)
@@ -14,7 +18,7 @@ add_time <- function(keys, in_path, out_path, out_script) {
     f <- fs[grepl(paste0("^", year), fs)]
     d <- ds[grepl(year, ds)]
     
-    lapply(1:length(f), function(x, f, d, out_path, os) {
+    lapply(seq_along(f), function(x, f, d, out_path, os) {
       add_time_fun(f[x], d[x], out_path, os)
     }, f = f, d = d, out_path = out_path, os = os)
   }
