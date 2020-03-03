@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 
-# in_file <- "/Volumes/tmpfs/199301_STREAMFLOW_DOMAIN1.nc"
-# out_file <- "/Volumes/tmpfs/199301_STREAMFLOW_DOMAIN1.nc"
-# comids <- readRDS("R/nexus_locations/nwis_comids.rds")
+# in_file <- "http://igsarmewwsdbl:8080/thredds/dodsC/md1/nwm_v2.ncml"
+# out_file <- "test.nc"
+# comids <- 240866
 
 ###################################################################
 # Tested with NWM v1.2 operational outputs and v1.2 retrospective.#
@@ -129,6 +129,16 @@ if("time" %in% names(nc$dim)) {
               list(ncvar_def(nc$dim$reference_time$name,
                              units = nc$dim$reference_time$units,
                              dim = reference_time_dim)))
+  }
+  
+  if("latitude" %in% names(nc$var)) {
+    vars <- c(vars,
+              list(ncvar_def(nc$var$latitude$name,
+                           units = nc$var$latitude$units,
+                           dim = new_feature_id_dim),
+                 ncvar_def(nc$var$longitude$name,
+                           units = nc$var$longitude$units,
+                           dim = new_feature_id_dim)))
   }
 } else {
   vars <- list(ncvar_def(nc$var$latitude$name,

@@ -52,7 +52,7 @@ reruns <- c(paste0("2012", c("02", "03", "04", "05",
                              "10", "11", "12")))
 
 plan <- drake_plan(keys = get_keys(bucket, ".*CHRTOUT.*"),
-                   # fs = get_nc_file(bucket, keys, threads, temp_dir, "content/data/full_v2/", 1993),
+                   fs = get_nc_file(bucket, keys, threads, temp_dir, "content/data/full_v2/", 1993),
                    wt = add_time(keys, in_path, out_path, out_script, reruns),
                    ct = concat(keys, out_path, concat_path, concat_script, reruns),
                    rs = reshape_thredds(reshape_script))
