@@ -5,6 +5,9 @@
     <service name="opendap" serviceType="OPENDAP" base="/thredds/dodsC/"/>
     <service name="ncssPoint" serviceType="NetcdfSubset Point" base="/thredds/ncss/point/"/>
   </service>
+  <datasetScan name="All Data" path="data" location="/data" >
+    <serviceName>all</serviceName>
+  </datasetScan >
   <dataset name="Real Time Latest and Forecast Model Run Collections">
   <dataset name="Analysis and Assimilation Latest Run" ID="analysis_assim_latest" urlPath="analysis_assim_latest">
     <serviceName>all</serviceName>
@@ -208,7 +211,7 @@
       <remove type="attribute" name="dev_channelBucket_only"/>
       <remove type="attribute" name="dev"/>
     </netcdf>
-  </dataset>  
+  </dataset>
 </dataset>
   <dataset name="Retrospective Full Model" ID="nwm_retro_full" urlPath="nwm_retro_full">
     <serviceName>all</serviceName>

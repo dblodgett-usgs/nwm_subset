@@ -1,5 +1,11 @@
-get_keys <- function(u, regex = NULL, after = NULL) {
+get_keys <- function(u, regex = NULL, after = NULL, prefix = NULL, override = NULL) {
+  
+  if(!is.null(override)) {
+    return(override)
+  }
+  
   ru <- paste0(u, "?", "list-type=2")
+  if(!is.null(prefix)) ru <- paste0(ru, "&prefix=", prefix)
   if(!is.null(after)) ru <- paste0(ru, "&start-after=", after)
   xml <- as_list(read_xml(ru))
   k <- lapply(xml$ListBucketResult[names(xml$ListBucketResult) == "Contents"], 
@@ -13,11 +19,19 @@ get_keys <- function(u, regex = NULL, after = NULL) {
   if(length(k) > 0) c(k, get_keys(u, regex, k[length(k)]))
 }
 
-get_nc_file <- function(bucket, keys, cores, temp_dir, data_path = "data", year = NULL) {
+get_nc_file <- function(bucket, keys, cores, temp_dir, data_path = "data", year = NULL, nwm21 = FALSE) {
   
   if(!is.null(year)) keys <- keys[grepl(year, keys)]
   
-  keys <- keys[grepl("full_physics", keys)]
+  if(nwm21) {
+    
+    keys <- keys[basename(keys) %in% list.files(data_path)]
+    
+  } else {
+    
+    keys <- keys[grepl("full_physics", keys)]
+    
+  }
   
   cl <- NULL
   if(cores > 1)
@@ -26,9 +40,9 @@ get_nc_file <- function(bucket, keys, cores, temp_dir, data_path = "data", year 
   
   fs <- pbapply::pblapply(keys, function(key, bucket, temp_dir) {
     
-    outfile <- file.path(data_path, key)
+    outfile <- file.path(data_path, basename(key))
     
-    temp_file <- file.path(temp_dir, key)
+    temp_file <- file.path(temp_dir, basename(key))
     
     dir.create(dirname(path.expand(temp_file)), showWarnings = FALSE, 
                recursive = TRUE)
@@ -36,6 +50,7 @@ get_nc_file <- function(bucket, keys, cores, temp_dir, data_path = "data", year 
     dir.create(dirname(path.expand(outfile)), showWarnings = FALSE, 
                recursive = TRUE)
     
+    # If these files have been put in outfile already, just skip.
     if(!file.exists(outfile)) {
       try(o <- httr::RETRY("GET", paste0(bucket, key), 
                            httr::write_disk(temp_file, 
@@ -57,3 +72,4 @@ get_nc_file <- function(bucket, keys, cores, temp_dir, data_path = "data", year 
   
   return(fs)
 }
+
