@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>David Blodgett</origin>
+        <pubdate>20200317</pubdate>
+        <title>National Water Model V2.0 retrospective for selected NWIS gage locations (1993-2018)</title>
+        <geoform>application/service</geoform>
+        <onlink>https://doi.org/10.5066/P93Z8UY7</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This dataset contains modeled hourly streamflow in cubic meters per second at each of about eighteen thousand selected operational and water-quality stream gage locations. It was assembled from publicly available retrospective V2.0 National Water Model outputs. The streamflow variable was extracted from model output files and the data were reshaped to optimize read performance. The stream gage locations were derived from several ongoing USGS project gages for evaluation of streamflow, water quality, and real-time monitoring, however only National Water Model identifiers and NHDPlus catchment outlet locations are used to identify model results. Relationships between NWIS gages and National Water Model prediction locations were not reviewed for release at the time of publication of this data. Please contact the author for up to date information. All processing resources used for data reformatting and extraction can be found in this repository: https://code.usgs.gov/water/nwm_subset. This supporting code also contains Docker images that are capable of processing real-time National Water Model outputs into similar formats as this dataset and provide data services via the THREDDS Data Server. The retrospective is available in one NetCDF file. These data conform to the NetCDF-CF Discrete Sampling Geometry conventions.
+
+The retrospective data are available from public cloud data outlets (Such as: https://registry.opendata.aws/nwm-archive/). More information on these data are available from the National Water Model v2 release notes here. https://www.weather.gov/media/notification/scn19-42natl_water_model.pdf. The contents of that pdf have been archived with this dataset.</abstract>
+      <purpose>This dataset has been used for several investigations into the performance of the National Water Model's ability to predict (reproduce) historical streamflow and for evaluation of its ability to predict (forecast) future streamflow. Previous versions (V1.2) of the same data were also used in an investigation evaluating the predictive power for water quality (nitrogen loads) using the weighted regressions on time, discharge, and seasons method (WRTDS, https://pubs.usgs.gov/tm/04/a10/). Additionally, preparation of the dataset was an engineering investigation into creation of NetCDF files and associated data services with desirable data-read performance characteristics.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>19930101</begdate>
+          <enddate>20181201</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-125.9466</westbc>
+        <eastbc>-65.6096</eastbc>
+        <northbc>49.4331</northbc>
+        <southbc>24.638</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>ISO 19115 Topic Category</themekt>
+        <themekey>inlandWaters</themekey>
+      </theme>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>prediction</themekey>
+        <themekey>streamflow</themekey>
+        <themekey>forecast</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Thesaurus</themekt>
+        <themekey>streamflow</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Metadata Identifier</themekt>
+        <themekey>USGS:5e5d8a84e4b01d50924f2dea</themekey>
+      </theme>
+      <place>
+        <placekt>Common geographic areas</placekt>
+        <placekey>United States</placekey>
+      </place>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>None</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>David L Blodgett</cntper>
+          <cntorg>U.S. Geological Survey, Water Mission Area</cntorg>
+        </cntperp>
+        <cntpos>Civil Engineer</cntpos>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <address>8505 Research Way</address>
+          <city>Middleton</city>
+          <state>WI</state>
+          <postal>53562</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>608-628-5855</cntvoice>
+        <cntemail>dblodgett@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>These data are modeled predictions and should be treated as such.</attraccr>
+    </attracc>
+    <logic>These data are raw model outputs and have not been checked beyond NWM model qa/qc.</logic>
+    <complete>Data are complete for the stated period of record.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>NA</horizpar>
+      </horizpa>
+      <vertacc>
+        <vertaccr>NA</vertaccr>
+      </vertacc>
+    </posacc>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>National Weather Service</origin>
+            <pubdate>20190701</pubdate>
+            <title>NOAA National Water Model Reanalysis Model Data V2.0</title>
+            <geoform>application/service</geoform>
+            <onlink>https://registry.opendata.aws/nwm-archive/</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>Digital</typesrc>
+        <srctime>
+          <timeinfo>
+            <rngdates>
+              <begdate>19930101</begdate>
+              <enddate>20181231</enddate>
+            </rngdates>
+          </timeinfo>
+          <srccurr>ground condition</srccurr>
+        </srctime>
+        <srccitea>NWM Retrospective</srccitea>
+        <srccontr>Primary input for retrospective</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>Converted raw model outputs into archive files with subset of modeled locations and aggregated into daily files. See https://code.usgs.gov/water/nwm_subset for full details.</procdesc>
+        <procdate>20181001</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spref>
+    <horizsys>
+      <planar>
+        <mapproj>
+          <mapprojn>NAD 1983 UTM Zone 10N</mapprojn>
+          <transmer>
+            <sfctrmer>0.9996</sfctrmer>
+            <longcm>-123.0</longcm>
+            <latprjo>0.0</latprjo>
+            <feast>500000.0</feast>
+            <fnorth>0.0</fnorth>
+          </transmer>
+        </mapproj>
+        <planci>
+          <plance>coordinate pair</plance>
+          <coordrep>
+            <absres>0.0001</absres>
+            <ordres>0.0001</ordres>
+          </coordrep>
+          <plandu>meters</plandu>
+        </planci>
+      </planar>
+      <geodetic>
+        <horizdn>D North American 1983</horizdn>
+        <ellips>GRS 1980</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257222101</denflat>
+      </geodetic>
+    </horizsys>
+    <vertdef>
+      <altsys>
+        <altdatum>North American Vertical Datum of 1988 (NAVD88)</altdatum>
+        <altres>2</altres>
+        <altunits>meters</altunits>
+        <altenc>Explicit elevation coordinate included with horizontal coordinates</altenc>
+      </altsys>
+    </vertdef>
+  </spref>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>U.S. Geological Survey</cntorg>
+          <cntper>GS ScienceBase</cntper>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <address>Denver Federal Center, Building 810, Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>1-888-275-8747</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data for other purposes, nor on all computer systems, nor shall the act of distribution constitute any such warranty.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>Digital Data</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://doi.org/10.5066/P93Z8UY7</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None</fees>
+    </stdorder>
+    <techpreq>The data and software associated with this data release may require knowledge of NetCDF, Docker, Bash, and R.</techpreq>
+  </distinfo>
+  <metainfo>
+    <metd>20200820</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>David L Blodgett</cntper>
+          <cntorg>U.S. Geological Survey, Water Mission Area</cntorg>
+        </cntperp>
+        <cntpos>Civil Engineer</cntpos>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <address>8505 Research Way</address>
+          <city>Middleton</city>
+          <state>WI</state>
+          <postal>53562</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>608-628-5855</cntvoice>
+        <cntemail>dblodgett@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>
