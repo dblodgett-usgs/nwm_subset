@@ -1,7 +1,7 @@
 base <- "https://noaa-nwm-retrospective-2-1-pds.s3.amazonaws.com"
 
-start <- as.POSIXct("1979-01-01 00:00:00")
-end <- as.POSIXct("2021-01-01 00:00:00")
+start <- as.POSIXct("1979-02-01 00:00:00", tz = "UTC")
+end <- as.POSIXct("2021-01-01 00:00:00", tz = "UTC")
 
 dates <- seq(from = start, to = end, by = "1 hour")
 
