@@ -1,10 +1,10 @@
 # in_file <- "http://localhost/thredds/dodsC/nwm_retro_full"
 # out_file <- "demo_nwm_retro.nc"
 # 
-in_file <- "http://localhost/thredds/dodsC/medium_range"
-out_file <- "subset_medium_range.nc"
-# 
-# comid_list <- c(7700148, 6781041, 8520575)
+in_file <- "http://10.0.0.25:8080/thredds/dodsC/data/nwmv21/content/data/nwm_v21_retro_full_ts.ncml"
+out_file <- "nwmv21_nwis.nc"
+
+comid_list <- readRDS("R/nexus_locations/nwis_comids.rds")
 
 library(ncdf4)
 
@@ -38,7 +38,7 @@ if(!"reference_time" %in% names(nc$dim)) {
   # Always write output with feature_id varying fastest.
   vars <- list(ncvar_def(nc$var$streamflow$name, 
                          units = nc$var$streamflow$units, 
-                         prec = "integer",
+                         prec = nc$var$streamflow$prec,
                          dim = list(time_dim,
                                     new_feature_id_dim),
                          chunksizes = c(nc$dim$time$len,1.), 
@@ -64,7 +64,7 @@ if(!"reference_time" %in% names(nc$dim)) {
   # Always write output with reference_time varying fastest.
   vars <- list(ncvar_def(nc$var$streamflow$name, 
                          units = nc$var$streamflow$units, 
-                         prec = "integer",
+                         prec = nc$var$streamflow$prec,
                          dim = list(new_feature_id_dim, 
                                     time_dim,
                                     reference_time_dim)),
