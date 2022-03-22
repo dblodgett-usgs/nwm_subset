@@ -10,7 +10,7 @@ f=$(find . -type f -size +3M)
 for n in $f; do ncks -O -4 -L 1 --cnk_plc=all --cnk_map=dmn -C -v streamflow,time $n $n; done
 ```
 
-Second, a time dimension was added to all files.
+Second, a time dimension was added to all files. 
 
 ```
 for f in *; do ncap2 -O -4 -L 1 --cnk_plc=all --cnk_map=dmn -s 'streamflow[time,feature_id]=streamflow' $f $f; done
@@ -19,7 +19,7 @@ for f in *; do ncap2 -O -4 -L 1 --cnk_plc=all --cnk_map=dmn -s 'streamflow[time,
 Third, files were concatenated by month. eg:
 
 ```
-ncrcat content/data/v2_temp/197902* content/data/v21/197902.nc
+ncrcat content/data/v2_temp/197902* content/data/v21/197902.nc 
 ```
 
 Fourth, a file containing feature_id, latitude, longitude, and the crs were extracted from one source file.
