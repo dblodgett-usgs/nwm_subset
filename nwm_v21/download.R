@@ -16,10 +16,24 @@ f <- list.files("data")
 u <- u[!basename(u) %in% f]
 
 get_data <- function(url) {
-  try(httr::RETRY("GET", url, 
+  f <- paste0("data/", basename(url))
+  o <- paste0("temp_data/", basename(url))
+  
+  if(!file.exists(o)) {
+    
+    try({
+      httr::RETRY("GET", url, 
                   config = httr::write_disk(
-                    paste0("data/", basename(url)),
-                    overwrite = TRUE)), silent = FALSE)
+                    f,
+                    overwrite = TRUE))
+      
+      system2("ncks", c("-O", "-4", "-L", "1", "--cnk_plc=all", "--cnk_map=dmn", "-C", "-v", "streamflow,time", f, f))
+      system2("ncap2", c("-O", "-4", "-L", "1", "--cnk_plc=all", "--cnk_map=dmn", "-s", "'streamflow[time,feature_id]=streamflow'", f, o))
+      
+      unlink(f)
+      
+    }, silent = FALSE)
+  }
 }
 
 cl <- parallel::makeCluster(4, outfile = "download_log.log")
