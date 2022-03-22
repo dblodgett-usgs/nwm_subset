@@ -19,15 +19,15 @@ get_data <- function(url) {
   try(httr::RETRY("GET", url, 
                   config = httr::write_disk(
                     paste0("data/", basename(url)),
-                    overwrite = FALSE)), silent = TRUE)
+                    overwrite = TRUE)), silent = FALSE)
 }
 
-cl <- parallel::makeCluster(4)
+cl <- parallel::makeCluster(4, outfile = "download_log.log")
 
 library(pbapply)
 
 pbo = pboptions(type="txt")
 
-out <- pbapply::pblapply(u, get_data, cl = cl)
+pbapply::pblapply(u, get_data, cl = cl)
 
-q("no")
+
