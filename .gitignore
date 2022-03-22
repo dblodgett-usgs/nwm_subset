@@ -12,3 +12,5 @@ png
 content/data
 content/cache
 content/wmsConfig.xml
+nwm_v21/review
+*.zip
