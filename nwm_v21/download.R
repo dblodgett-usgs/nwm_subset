@@ -11,15 +11,18 @@ dates <- seq(from = start, to = end, by = "1 hour")
 u <- paste0(base, "/model_output/", as.character(dates, "%Y"), 
             "/", as.character(dates, "%Y%m%d%H%M"), 
                               ".CHRTOUT_DOMAIN1.comp")
-f <- list.files("data")
+f <- list.files("temp_data")
 
 u <- u[!basename(u) %in% f]
 
 get_data <- function(url) {
+  
   f <- paste0("data/", basename(url))
   o <- paste0("temp_data/", basename(url))
   
   if(!file.exists(o)) {
+    
+    message(o)
     
     try({
       httr::RETRY("GET", url, 
